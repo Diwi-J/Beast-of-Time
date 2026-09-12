@@ -6,7 +6,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mutant Animator
+  m_Name: _Mutant Animator
   serializedVersion: 6
   m_AnimatorParameters: []
   m_AnimatorLayers:
