@@ -25,6 +25,26 @@
                     "interactions": "",
                     "initialStateCheck": true,
                     "priority": 0
+                },
+                {
+                    "name": "Zoom",
+                    "type": "Value",
+                    "id": "28980fef-a2af-4b0d-bb22-d53cc3297aea",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true,
+                    "priority": 0
+                },
+                {
+                    "name": "Focus",
+                    "type": "Button",
+                    "id": "98fac122-ab88-4fec-8f01-15f9bd1a0ef3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
                 }
             ],
             "bindings": [
@@ -44,7 +64,7 @@
                     "id": "cef133e8-1d30-497b-8ffd-c41f243d1bc3",
                     "path": "1DAxis",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "Scale(factor=10)",
                     "groups": "",
                     "action": "LookOrbitX",
                     "isComposite": true,
@@ -88,7 +108,7 @@
                     "id": "e6d7bc01-5f83-4e14-aac9-2c88f3f4a4b5",
                     "path": "1DAxis",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "Scale(factor=10)",
                     "groups": "",
                     "action": "LookOrbitY",
                     "isComposite": true,
@@ -115,6 +135,28 @@
                     "action": "LookOrbitY",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "f43493b0-2551-47cf-8ca1-89615ab37d82",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "21bf9aff-bb50-4be8-8709-0418d257bccc",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Focus",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
