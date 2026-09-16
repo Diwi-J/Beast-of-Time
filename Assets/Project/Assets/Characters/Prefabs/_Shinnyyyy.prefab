@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7796154797197966508
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8821961280791252635}
+  m_Layer: 8
+  m_Name: Camera Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8821961280791252635
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7796154797197966508}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3355426789238158495}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &402206267654138277
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -374,7 +405,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 866c7ac7159653347b385d9df53a202a, type: 3}
       propertyPath: m_Name
-      value: Paladin WProp J Nordstrom
+      value: _Shinnyyyy
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 866c7ac7159653347b385d9df53a202a, type: 3}
       propertyPath: m_Layer
@@ -523,6 +554,9 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 866c7ac7159653347b385d9df53a202a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8821961280791252635}
     - targetCorrespondingSourceObject: {fileID: -6330318480650085402, guid: 866c7ac7159653347b385d9df53a202a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3822344331211681046}
@@ -587,7 +621,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 797dea7f575a7f347bf4d1e4eaff52f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerControls
-  cameraTransform: {fileID: 0}
+  cameraTransform: {fileID: 6848871327088407706, guid: 47540271d8d12044e87bf3aa4ebc99fe, type: 3}
   rotationSpeed: 10
   animatorDamping: 0.1
 --- !u!114 &351124968081760743
@@ -602,6 +636,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 130769fa0225d0b4f862b8aada9b4701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
+--- !u!4 &3355426789238158495 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 866c7ac7159653347b385d9df53a202a, type: 3}
+  m_PrefabInstance: {fileID: 2961793635078886260}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6218926830672687250 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9175088765034030054, guid: 866c7ac7159653347b385d9df53a202a, type: 3}
