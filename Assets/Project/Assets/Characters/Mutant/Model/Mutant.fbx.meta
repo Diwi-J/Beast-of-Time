@@ -3,7 +3,12 @@ guid: 88eedf690e30e294aaaeb495a148d52d
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mutant_M
+    second: {fileID: 2100000, guid: 9520a9fd257b99a40bb33bcfdea9bacf, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
