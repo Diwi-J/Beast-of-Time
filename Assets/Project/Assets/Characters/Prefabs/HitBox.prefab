@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 810742039374679648}
   - component: {fileID: 6226555642495067296}
+  - component: {fileID: 5165595489617836988}
+  - component: {fileID: 3932641110151717269}
   m_Layer: 0
   m_Name: HitBox
   m_TagString: Untagged
@@ -55,3 +57,32 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5165595489617836988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6510564498781030456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aae65ba0c64b4540b90e05db89387b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatCollider
+  type: 0
+  Id: default
+  Owner: {fileID: 0}
+--- !u!114 &3932641110151717269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6510564498781030456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 494a5883f6853a24c8f7500bc9f35e6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitDetector
+  damage: 0
+  parryWindow: 0

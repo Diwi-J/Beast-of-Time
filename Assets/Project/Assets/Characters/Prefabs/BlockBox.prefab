@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3503621920168625331}
   - component: {fileID: 6035134208528964546}
+  - component: {fileID: 1522792005473088505}
   m_Layer: 0
   m_Name: BlockBox
   m_TagString: Untagged
@@ -53,3 +54,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1522792005473088505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6694789461670888343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aae65ba0c64b4540b90e05db89387b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatCollider
+  type: 2
+  Id: default
+  Owner: {fileID: 0}

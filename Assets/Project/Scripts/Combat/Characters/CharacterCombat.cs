@@ -12,10 +12,10 @@ public class CharacterCombat : MonoBehaviour
 
     private void Awake()
     {
-        foreach (var cc in GetComponentsInChildren<CombatCollider>())
+        foreach (var cc in GetComponentsInChildren<CombatCollider>(true))
         {
             cc.Owner = this;
-            cc.GetComponent<CombatCollider>().enabled = false;
+            cc.GetComponent<Collider>().enabled = false;
 
             switch (cc.type)
             {
