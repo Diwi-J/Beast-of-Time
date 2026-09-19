@@ -26,7 +26,7 @@ public class PlayerCameraFocus : MonoBehaviour
     private Transform defaultLookAt;
     private Transform currentTarget;
 
-    private CameraControls cameraControls;
+    private Controls controls;
     private CinemachineOrbitalFollow orbitalFollow;
 
     private float cameraDistanceVelocity;
@@ -34,7 +34,7 @@ public class PlayerCameraFocus : MonoBehaviour
 
     private void Awake()
     {
-        cameraControls = new CameraControls();
+        controls = new Controls();
 
         if (playerCamera != null)
         {
@@ -58,14 +58,14 @@ public class PlayerCameraFocus : MonoBehaviour
 
     private void OnEnable()
     {
-        cameraControls.Camera.Enable();
-        cameraControls.Camera.Focus.performed += OnFocusPerformed;
+        controls.Player.Enable();
+        controls.Player.Focus.performed += OnFocusPerformed;
     }
 
     private void OnDisable()
     {
-        cameraControls.Camera.Focus.performed += OnFocusPerformed;
-        cameraControls.Camera.Disable();
+        controls.Player.Focus.performed += OnFocusPerformed;
+        controls.Player.Disable();
     }
 
     private void OnFocusPerformed(InputAction.CallbackContext context)

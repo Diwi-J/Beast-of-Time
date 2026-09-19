@@ -7,8 +7,11 @@ public class CharacterCombat : MonoBehaviour
     private Dictionary<string, CombatCollider> hurtboxes = new();
     private CombatCollider blockbox;
 
+    [Header("Parry Timing")]
+    public float parryStartUpDelay = 0.08f;
+    public float parryWindowDuration = 0.2f;
     public bool IsBlocking { get; private set; }
-    public float BlockStartTime { get; private set; }
+    private float BlockStartTime;
 
     private void Awake()
     {
@@ -87,4 +90,10 @@ public class CharacterCombat : MonoBehaviour
         EnableAllHurtboxes();
     }
     #endregion 
+
+    public bool IsInParryWindow()
+    {
+        float elapsed = Time.time - BlockStartTime;
+        return elapsed >= parryStartUpDelay && elapsed <= (parryStartUpDelay - parryWindowDuration);
+    }
 }

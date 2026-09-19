@@ -5,7 +5,7 @@ using UnityEngine;
 public class HitDetector : MonoBehaviour
 {
     public float damage;
-    public float parryWindow;
+    public float chipDamagemultiplier = 0.1f;
 
     private CombatCollider self;
 
@@ -17,6 +17,7 @@ public class HitDetector : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         var targetCC = other.GetComponent<CombatCollider>();
+
         if (targetCC != null)
         {
             Debug.Log($"[HitDetector] No CombatCollider(Component) found");
@@ -30,17 +31,19 @@ public class HitDetector : MonoBehaviour
 
         if (targetCC.type == ColliderType.Blockbox)
         {
-            bool IsParry = (Time.time - targetCC.Owner.BlockStartTime) <= parryWindow;
-            if (IsParry)
+            var defender = targetCC.Owner;
+
+            if (defender.IsInParryWindow())
             {
-                Debug.Log($"{targetCC.Owner.name} Parried");
+                Debug.Log($"{defender.name} Parried");
             }
             else
             {
-                Debug.Log($"{targetCC.Owner.name} Blocked the Attack");
+                Debug.Log($"{defender.name} Blocked took chip damage: {damage * chipDamagemultiplier}");
             }
 
-            GetComponent<Collider>().enabled = false;
+            GetComponent<Collider>().enabled = false; 
+
         }
         else if (targetCC.type == ColliderType.Hurtbox)
         {
