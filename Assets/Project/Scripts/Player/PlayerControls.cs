@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float runSpeed = 5f;
     [SerializeField] private float rotationSpeed = 10f;   // how fast the character turns to face movement (Freelook only)
     [SerializeField] private float animatorDamping = 0.1f; // smooths Animator float changes so blends aren't jittery
-    [SerializeField] private float powerUpBoost = 1f;
 
     [Header("Gravity")]
     [SerializeField] private float gravity = -15f;
@@ -26,7 +25,6 @@ public class PlayerController : MonoBehaviour
     private static readonly int MoveXHash = Animator.StringToHash("MoveX");
     private static readonly int MoveZHash = Animator.StringToHash("MoveZ");
     private static readonly int IsFocusedHash = Animator.StringToHash("IsFocused");
-    private static readonly int PowerUpHash = Animator.StringToHash("PowerUp");
 
     private void Awake()
     {
@@ -43,8 +41,8 @@ public class PlayerController : MonoBehaviour
             isFocused = !isFocused;
             animator.SetBool(IsFocusedHash, isFocused);
 
-            animator.SetFloat(PowerUpHash, powerUpBoost);
         };
+
     }
 
     private void OnEnable() => controls.Enable();

@@ -416,11 +416,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
---- !u!4 &803601541 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5183921188294374301, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
-  m_PrefabInstance: {fileID: 803601540}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -521,34 +516,6 @@ PrefabInstance:
     - target: {fileID: 3355426789238158495, guid: f753439cd63baeb499d942c83567ca26, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7294460315931692114, guid: f753439cd63baeb499d942c83567ca26, type: 3}
-      propertyPath: playerCamera
-      value: 
-      objectReference: {fileID: 1808903724580836902}
-    - target: {fileID: 7294460315931692114, guid: f753439cd63baeb499d942c83567ca26, type: 3}
-      propertyPath: enemyLayer.m_Bits
-      value: 64
-      objectReference: {fileID: 0}
-    - target: {fileID: 7294460315931692114, guid: f753439cd63baeb499d942c83567ca26, type: 3}
-      propertyPath: maxCameraDistance
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7294460315931692114, guid: f753439cd63baeb499d942c83567ca26, type: 3}
-      propertyPath: minCameraDistance
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7294460315931692114, guid: f753439cd63baeb499d942c83567ca26, type: 3}
-      propertyPath: lockOnCameraTarget
-      value: 
-      objectReference: {fileID: 803601541}
-    - target: {fileID: 7294460315931692114, guid: f753439cd63baeb499d942c83567ca26, type: 3}
-      propertyPath: inputAxisController
-      value: 
-      objectReference: {fileID: 719268750619326996}
-    - target: {fileID: 7294460315931692114, guid: f753439cd63baeb499d942c83567ca26, type: 3}
-      propertyPath: cameraDistanceSmoothTime
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
