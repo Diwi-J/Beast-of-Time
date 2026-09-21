@@ -9,6 +9,8 @@ public class HitDetector : MonoBehaviour
 
     private CombatCollider self;
 
+    private static readonly int ImpactHash = Animator.StringToHash("Impact");
+
     private void Awake()
     {
         self = GetComponent<CombatCollider>();
@@ -16,15 +18,17 @@ public class HitDetector : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //Debug.Log($"Trigger entered by {other.name}");
+
         var targetCC = other.GetComponent<CombatCollider>();
 
-        if (targetCC != null)
+        if (targetCC == null)
         {
-            Debug.Log($"[HitDetector] No CombatCollider(Component) found");
+            //Debug.Log($"[HitDetector] No CombatCollider(Component) found");
             return;
         }
 
-        if (targetCC == self.Owner)
+        if (targetCC.Owner == self.Owner)
         {
             return;
         }
@@ -40,6 +44,7 @@ public class HitDetector : MonoBehaviour
             else
             {
                 Debug.Log($"{defender.name} Blocked took chip damage: {damage * chipDamagemultiplier}");
+                defender.GetComponent<Animator>().SetTrigger(ImpactHash);
             }
 
             GetComponent<Collider>().enabled = false; 

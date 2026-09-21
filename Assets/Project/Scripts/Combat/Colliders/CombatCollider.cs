@@ -10,15 +10,6 @@ public class CombatCollider : MonoBehaviour
 
     [HideInInspector] public CharacterCombat Owner;
 
-    private void Awake()
-    {
-        if (string.IsNullOrEmpty(Id) || Id == "default")
-        {
-            string[] parts = gameObject.name.Split('_');
-            Id = parts.Length > 1 ? parts[1] : gameObject.name;
-        }       
-    }
-
     private void Reset()
     {
         GetComponent<Collider>().isTrigger = true;

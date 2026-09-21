@@ -64,7 +64,7 @@ public class PlayerCameraFocus : MonoBehaviour
 
     private void OnDisable()
     {
-        controls.Player.Focus.performed += OnFocusPerformed;
+        controls.Player.Focus.performed -= OnFocusPerformed;
         controls.Player.Disable();
     }
 
@@ -240,6 +240,12 @@ public class PlayerCameraFocus : MonoBehaviour
         );
 
         orbitalFollow.RadialAxis.Value = newDistance;
+    }
+
+    public void SnapCameraBehind()
+    {
+        if (orbitalFollow != null)
+            orbitalFollow.HorizontalAxis.Value += 180f;
     }
 
     private void OnDrawGizmosSelected()

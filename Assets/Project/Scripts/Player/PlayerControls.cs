@@ -1,30 +1,56 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(CharacterController))]
-public class PlayerController : MonoBehaviour
+public class PlayerControls : MonoBehaviour
 {
-    [Header("Movement Tuning")]
-    [SerializeField] private float walkSpeed = 2f;
-    [SerializeField] private float runSpeed = 5f;
-    [SerializeField] private float rotationSpeed = 10f;   // how fast the character turns to face movement (Freelook only)
-    [SerializeField] private float animatorDamping = 0.1f; // smooths Animator float changes so blends aren't jittery
+    [Header("References")]
+    [SerializeField] private Transform cameraTransform;
+
+    [Header("Freelook Speeds")]
+    [SerializeField] private float freelookWalkSpeed = 2f;
+    [SerializeField] private float freelookRunSpeed = 5f;
+    [SerializeField] private float freelookRotationSpeed = 10f;
+    [SerializeField] private float speedDamping = 0.1f;
+
+    [Header("Freelook 180 Turn")]
+    [SerializeField] private float turnBackDotThreshold = -0.5f; // input opposes facing beyond this, trigger 180
+    [SerializeField] private PlayerCameraFocus cameraFocus;
+
+    [Header("Focus Speeds")]
+    [SerializeField] private float focusWalkSpeed = 2f;
+    [SerializeField] private float focusRunSpeed = 4f;
+    [SerializeField] private float focusRotationSpeed = 12f;
+    [SerializeField] private float focusMoveDamping = 0.1f;
+
+    [Header("Blend Tree Ranges")]
+    [SerializeField] private float freelookWalkThreshold = 1.33f;
+    [SerializeField] private float freelookRunThreshold = 2.93f;
+    [SerializeField] private float focusWalkMagnitude = 1f;
+    [SerializeField] private float focusRunMagnitude = 3f;
 
     [Header("Gravity")]
     [SerializeField] private float gravity = -15f;
-    [SerializeField] private float groundedGravity = -2f; // small constant downward force while grounded, keeps isGrounded reliable
+    [SerializeField] private float groundedGravity = -2f;
 
     private Animator animator;
     private CharacterController controller;
     private Controls controls;
+
     private Vector2 moveInput;
     private bool isFocused;
     private float verticalVelocity;
+    private bool isTurning;
+
+    // externally settable by PlayerCameraFocus, or pulled directly if you prefer wiring it there
+    public Transform lockOnTarget;
 
     private static readonly int SpeedHash = Animator.StringToHash("Speed");
     private static readonly int MoveXHash = Animator.StringToHash("MoveX");
     private static readonly int MoveZHash = Animator.StringToHash("MoveZ");
     private static readonly int IsFocusedHash = Animator.StringToHash("IsFocused");
+    private static readonly int TurnHash = Animator.StringToHash("180");
 
     private void Awake()
     {
@@ -35,14 +61,11 @@ public class PlayerController : MonoBehaviour
         controls.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
         controls.Player.Move.canceled += ctx => moveInput = Vector2.zero;
 
-        // Focus toggles on press rather than being held, so it matches a lock-on style press
         controls.Player.Focus.performed += ctx =>
         {
             isFocused = !isFocused;
             animator.SetBool(IsFocusedHash, isFocused);
-
         };
-
     }
 
     private void OnEnable() => controls.Enable();
@@ -50,59 +73,76 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        Vector3 moveDirection = isFocused ? UpdateFocus() : UpdateFreelook();
-        ApplyGravity();
+        Vector3 motion = isFocused ? UpdateFocus() : UpdateFreelook();
 
-        Vector3 motion = moveDirection + Vector3.up * verticalVelocity;
+        if (controller.isGrounded)
+            verticalVelocity = groundedGravity;
+        else
+            verticalVelocity += gravity * Time.deltaTime;
+
+        motion.y = verticalVelocity;
         controller.Move(motion * Time.deltaTime);
     }
 
     private Vector3 UpdateFreelook()
     {
-        // In Freelook the character always faces its movement direction, so we only need magnitude for Speed.
-        float inputMagnitude = moveInput.magnitude; // 0 = idle, up to 1 = full run
-        animator.SetFloat(SpeedHash, inputMagnitude, animatorDamping, Time.deltaTime);
+        float inputMagnitude = moveInput.magnitude;
 
-        if (inputMagnitude <= 0.1f)
+        float targetSpeedParam = Mathf.Lerp(0f, freelookRunThreshold, inputMagnitude);
+        animator.SetFloat(SpeedHash, targetSpeedParam, speedDamping, Time.deltaTime);
+
+        if (inputMagnitude <= 0.1f || isTurning)
+            return Vector3.zero;
+
+        Vector3 camForward = Vector3.Scale(cameraTransform.forward, new Vector3(1, 0, 1)).normalized;
+        Vector3 camRight = Vector3.Scale(cameraTransform.right, new Vector3(1, 0, 1)).normalized;
+        Vector3 desiredDirection = (camForward * moveInput.y + camRight * moveInput.x).normalized;
+
+        float facingDot = Vector3.Dot(transform.forward, desiredDirection);
+
+        // Input wants a direction roughly opposite current facing -> trigger 180, don't move this frame
+        if (facingDot < turnBackDotThreshold)
         {
+            animator.SetTrigger(TurnHash);
+            isTurning = true;
             return Vector3.zero;
         }
 
-        // Raw world-space direction - no camera basis involved.
-        Vector3 direction = new Vector3(moveInput.x, 0f, moveInput.y);
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(desiredDirection), freelookRotationSpeed * Time.deltaTime);
 
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        float speed = Mathf.Lerp(freelookWalkSpeed, freelookRunSpeed, inputMagnitude);
+        return transform.forward * speed * inputMagnitude;
+    }
 
-        float speedMultiplier = Mathf.Lerp(walkSpeed, runSpeed, inputMagnitude);
-        return direction.normalized * speedMultiplier * inputMagnitude;
+    // Call this via an Animation Event at the end of the "180" clip
+    public void OnTurnComplete()
+    {
+        isTurning = false;
+        cameraFocus?.SnapCameraBehind();
     }
 
     private Vector3 UpdateFocus()
     {
-        // In Focus, movement direction is relative to the character's current facing (which will later
-        // be driven by the lock-on system aiming at the target). Facing itself isn't rotated here yet -
-        // that'll be added once lock-on exists and gives this a target to face.
-        Vector3 worldDirection = new Vector3(moveInput.x, 0f, moveInput.y);
-
-        Vector3 localMove = transform.InverseTransformDirection(worldDirection);
-        animator.SetFloat(MoveXHash, localMove.x, animatorDamping, Time.deltaTime);
-        animator.SetFloat(MoveZHash, localMove.z, animatorDamping, Time.deltaTime);
-
-        float speedMultiplier = Mathf.Lerp(walkSpeed, runSpeed, moveInput.magnitude);
-        return worldDirection.normalized * speedMultiplier * moveInput.magnitude;
-    }
-
-    private void ApplyGravity()
-    {
-        if (controller.isGrounded)
+        if (lockOnTarget != null)
         {
-            // A small constant downward force rather than 0, so isGrounded stays reliably true on slopes/steps.
-            verticalVelocity = groundedGravity;
+            Vector3 toTarget = lockOnTarget.position - transform.position;
+            toTarget.y = 0f;
+            if (toTarget.sqrMagnitude > 0.001f)
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(toTarget), focusRotationSpeed * Time.deltaTime);
         }
-        else
-        {
-            verticalVelocity += gravity * Time.deltaTime;
-        }
+
+        float inputMagnitude = moveInput.magnitude;
+        float blendMagnitude = Mathf.Lerp(focusWalkMagnitude, focusRunMagnitude, inputMagnitude);
+        Vector2 scaledMove = moveInput.normalized * blendMagnitude * inputMagnitude;
+
+        animator.SetFloat(MoveXHash, inputMagnitude > 0.01f ? scaledMove.x : 0f, focusMoveDamping, Time.deltaTime);
+        animator.SetFloat(MoveZHash, inputMagnitude > 0.01f ? scaledMove.y : 0f, focusMoveDamping, Time.deltaTime);
+
+        if (inputMagnitude <= 0.1f)
+            return Vector3.zero;
+
+        Vector3 localDirection = (transform.right * moveInput.x + transform.forward * moveInput.y).normalized;
+        float speed = Mathf.Lerp(focusWalkSpeed, focusRunSpeed, inputMagnitude);
+        return localDirection * speed * inputMagnitude;
     }
 }

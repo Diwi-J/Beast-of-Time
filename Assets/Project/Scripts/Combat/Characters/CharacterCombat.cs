@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using UnityEditor;
+using UnityEditor.EditorTools;
 
 public class CharacterCombat : MonoBehaviour
 {
@@ -9,9 +11,7 @@ public class CharacterCombat : MonoBehaviour
     private CombatCollider blockbox;
 
     private Controls controls;
-    public Animator animator;
-
-    private CharacterCombat enemyCombat;
+    private Animator animator;
 
     [Header("Parry Timing")]
     public float parryStartUpDelay = 0.08f;
@@ -19,9 +19,12 @@ public class CharacterCombat : MonoBehaviour
 
     [Header("Time Dilation")]
     public float PoweredUpBoost = 1.25f;
-    public float SlowDownDebuff = 0.1f;
+    public float SlowDownDebuff = 0.25f;
     private static readonly int PowerUpParam = Animator.StringToHash("PowerUp");
     private static readonly int SlowDownParam = Animator.StringToHash("SlowDown");
+
+    public static List<CharacterCombat> Enemies = new();
+    public static CharacterCombat PlayerInstance { get; private set; }
 
     public bool IsBlocking { get; private set; }
     private float BlockStartTime;
@@ -29,10 +32,18 @@ public class CharacterCombat : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-
         controls = new Controls();
 
-        controls.Player.PowerUp.performed += PowerUp;
+        if (CompareTag("Player"))
+        {
+            PlayerInstance = this;
+            //Debug.Log("Player Instance has been created");
+        }
+        else if (CompareTag("Enemy"))
+        {
+            Enemies.Add(this);
+            Debug.Log($"{gameObject.name} has been added to the List: Enemies");
+        }
 
         foreach (var cc in GetComponentsInChildren<CombatCollider>(true))
         {
@@ -51,23 +62,32 @@ public class CharacterCombat : MonoBehaviour
                     blockbox = cc;
                     break;
             }
-
-            EnableAllHurtboxes();
-
         }
+
+        EnableAllHurtboxes();
     }
 
     #region HitBox Controls
     public void Enablehitbox(string id)
     {
+        Debug.Log($"[{gameObject.name}] Enablehitbox called with id: {id}");
+
         if (hitboxes.TryGetValue(id, out var cc))
         {
             cc.GetComponent<Collider>().enabled = true;
+
+           // Debug.Log($"[CharacterCombat] Hitbox '{id}' collider enabled = {cc.GetComponent<Collider>().enabled}");
+        }
+        else
+        {
+            Debug.Log($"[CharacterCombat] No hitbox found with id: {id}");
         }
     }
 
     public void Disablehitbox(string id)
     {
+        //Debug.Log($"[{gameObject.name}] Disablehitbox called with id: {id}");
+
         if (hitboxes.TryGetValue(id, out var cc))
         {
             cc.GetComponent<Collider>().enabled = false;
@@ -96,6 +116,8 @@ public class CharacterCombat : MonoBehaviour
     #region Blockbox Controls
     public void EnableBlockbox()
     {
+        Debug.Log($"[{gameObject.name}] Blockbox Enabled");
+
         IsBlocking = true;
         BlockStartTime = Time.time;
         DisableAllHurtboxes();
@@ -104,6 +126,8 @@ public class CharacterCombat : MonoBehaviour
 
     public void DisableBlockbox()
     {
+        //Debug.Log($"[{gameObject.name}] Blockbox Disbaled");
+
         IsBlocking = false;
         if (blockbox != null) blockbox.GetComponent<Collider>().enabled = false;
         EnableAllHurtboxes();
@@ -113,27 +137,46 @@ public class CharacterCombat : MonoBehaviour
     public bool IsInParryWindow()
     {
         float elapsed = Time.time - BlockStartTime;
-        return elapsed >= parryStartUpDelay && elapsed <= (parryStartUpDelay - parryWindowDuration);
+        return elapsed >= parryStartUpDelay && elapsed <= (parryStartUpDelay + parryWindowDuration);
     }
 
     #region Time Dilation
-    void SetAnimationSpeed(string paramater, float multiplier)
-    {
-        animator.SetFloat(paramater, multiplier);
-    }
-
     void PowerUp(InputAction.CallbackContext ctx)
     {
+        if (!CompareTag("Player")) return;
+
         animator.SetFloat(PowerUpParam, PoweredUpBoost);
-        if (enemyCombat != null)
-            enemyCombat.animator.SetFloat(SlowDownParam, SlowDownDebuff);
+
+        ApplySlowDown();
     }
 
     void PowerDown()
     {
-        animator.SetFloat(PowerUpParam, 1f);
-        if (enemyCombat != null)
-            enemyCombat.animator.SetFloat(SlowDownParam, 1f);
+        if (CompareTag("Player"))
+        {
+            animator.SetFloat(PowerUpParam, 1);
+        }
+
+        RemoveSlowDown();
+
+    }
+
+    void ApplySlowDown()
+    {
+        foreach (var enemy in Enemies)
+        {
+            Animator EnemyAnim = enemy.GetComponent<Animator>();
+            EnemyAnim.SetFloat(SlowDownParam, SlowDownDebuff);
+            Debug.Log($"{enemy.name } has been Slowed Down");
+        }
+    }
+
+    void RemoveSlowDown()
+    {
+        foreach (var enemy in Enemies)
+        {
+            animator.SetFloat(PowerUpParam, 1);
+        }
     }
     #endregion 
 
@@ -143,9 +186,11 @@ public class CharacterCombat : MonoBehaviour
         controls.Player.PowerUp.performed += PowerUp;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
-        controls.Disable();
         controls.Player.PowerUp.performed -= PowerUp;
+        controls.Disable();
     }
+
+    private void OnDestroy() => Enemies.Remove(this);
 }
