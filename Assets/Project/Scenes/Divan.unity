@@ -364,6 +364,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!198 &581838295 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 236808867906169528, guid: f753439cd63baeb499d942c83567ca26, type: 3}
+  m_PrefabInstance: {fileID: 1645833949}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -506,6 +511,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5183921188294374301, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
   m_PrefabInstance: {fileID: 1425521609}
   m_PrefabAsset: {fileID: 0}
+--- !u!198 &1632911026 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8920245300222442725, guid: f753439cd63baeb499d942c83567ca26, type: 3}
+  m_PrefabInstance: {fileID: 1645833949}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1645833949
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -558,6 +568,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4556146938186454585, guid: f753439cd63baeb499d942c83567ca26, type: 3}
+      propertyPath: ParryDistortion
+      value: 
+      objectReference: {fileID: 581838295}
+    - target: {fileID: 4556146938186454585, guid: f753439cd63baeb499d942c83567ca26, type: 3}
+      propertyPath: TimeDilationDistorion
+      value: 
+      objectReference: {fileID: 1632911026}
     - target: {fileID: 7294460315931692114, guid: f753439cd63baeb499d942c83567ca26, type: 3}
       propertyPath: playerCamera
       value: 

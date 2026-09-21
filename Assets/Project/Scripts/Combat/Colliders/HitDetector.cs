@@ -40,6 +40,7 @@ public class HitDetector : MonoBehaviour
             if (defender.IsInParryWindow())
             {
                 Debug.Log($"{defender.name} Parried");
+                defender.ParryDistortion.Play();
             }
             else
             {

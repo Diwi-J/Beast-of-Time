@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEditor;
 using UnityEditor.EditorTools;
+using Unity.Collections.Tests.CoreCLR.TestJobs;
 
 public class CharacterCombat : MonoBehaviour
 {
@@ -23,6 +24,10 @@ public class CharacterCombat : MonoBehaviour
     private static readonly int PowerUpParam = Animator.StringToHash("PowerUp");
     private static readonly int SlowDownParam = Animator.StringToHash("SlowDown");
 
+    [Header("VFX")]
+    [SerializeField] private ParticleSystem TimeDilationDistorion;
+    [SerializeField] public ParticleSystem ParryDistortion;
+
     public static List<CharacterCombat> Enemies = new();
     public static CharacterCombat PlayerInstance { get; private set; }
 
@@ -33,6 +38,12 @@ public class CharacterCombat : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         controls = new Controls();
+
+        controls.Player.PowerUp.performed += PowerUp;
+
+        //distortion = GetComponentInChildren<ParticleSystem>();
+
+        //if (distortion != null) Debug.Log("distorion not found");
 
         if (CompareTag("Player"))
         {
@@ -147,6 +158,8 @@ public class CharacterCombat : MonoBehaviour
 
         animator.SetFloat(PowerUpParam, PoweredUpBoost);
 
+        TimeDilationDistorion.Play();
+
         ApplySlowDown();
     }
 
@@ -183,12 +196,11 @@ public class CharacterCombat : MonoBehaviour
     private void OnEnable()
     {
         controls.Enable();
-        controls.Player.PowerUp.performed += PowerUp;
+
     }
 
     private void OnDisable()
     {
-        controls.Player.PowerUp.performed -= PowerUp;
         controls.Disable();
     }
 
