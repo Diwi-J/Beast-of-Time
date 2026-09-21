@@ -3,7 +3,10 @@ using UnityEngine.UI;
 
 public class Gauge : MonoBehaviour
 {
-    // The UI Image showing the gauge. Its Image Type must be set to "Filled".
+    // The empty bar / frame image that sits behind the fill.
+    [SerializeField] private Image gaugeBackgroundImage;
+
+    // The image that fills up. The script sets it to "Filled" for you.
     [SerializeField] private Image gaugeFillImage;
 
     // How much a successful parry fills the gauge (0 to 1).
@@ -15,16 +18,21 @@ public class Gauge : MonoBehaviour
     // How fast the bar visually catches up when the value changes.
     [SerializeField] private float fillSpeed = 6f;
 
-    // The actual gauge value, always between 0 and 1.
+    // The real gauge value, and the smoothed value shown on screen.
     private float currentValue = 0f;
-
-    // The value shown on screen right now, smoothly chasing currentValue.
     private float displayedValue = 0f;
+
+    private void Awake()
+    {
+        // fillAmount only works when the Image Type is Filled.
+        gaugeFillImage.type = Image.Type.Filled;
+        gaugeFillImage.fillMethod = Image.FillMethod.Horizontal;
+        gaugeFillImage.fillOrigin = (int)Image.OriginHorizontal.Left;
+    }
 
     private void Update()
     {
-        // Move the displayed value a bit closer to the real value each frame,
-        // so the bar animates instead of jumping instantly.
+        // Move the displayed value closer to the real value each frame so the bar animates.
         displayedValue = Mathf.Lerp(displayedValue, currentValue, Time.deltaTime * fillSpeed);
         gaugeFillImage.fillAmount = displayedValue;
     }
@@ -35,7 +43,7 @@ public class Gauge : MonoBehaviour
         currentValue = Mathf.Clamp01(currentValue + parryFillAmount);
     }
 
-    // Tries to spend the gauge. Returns true if there was enough, false if not.
+    // Spends the gauge. Returns true if there was enough, false if not.
     public bool TryUseGauge()
     {
         if (currentValue < useCost)
