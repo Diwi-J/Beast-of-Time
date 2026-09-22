@@ -847,7 +847,6 @@ MonoBehaviour:
   runSpeed: 5
   rotationSpeed: 10
   animatorDamping: 0.1
-  powerUpBoost: 1.2
   gravity: -15
   groundedGravity: -2
 --- !u!114 &351124968081760743
@@ -874,6 +873,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b754a470514cc94d8e16249f358c7e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterCombat
+  animator: {fileID: 0}
+  parryStartUpDelay: 0.08
+  parryWindowDuration: 0.2
+  PoweredUpBoost: 1.25
+  SlowDownDebuff: 0.1
 --- !u!114 &7294460315931692114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -896,8 +900,8 @@ MonoBehaviour:
   minCameraDistance: 1
   maxCameraDistance: 2
   cameraDistanceSmoothTime: 1
-  playerCamera: {fileID: 0}
-  inputAxisController: {fileID: 0}
+  playerCamera: {fileID: 1808903725924668117, guid: 8df0bfcb80326024d9af0588c0d14e5a, type: 3}
+  inputAxisController: {fileID: 719268751961194215, guid: 8df0bfcb80326024d9af0588c0d14e5a, type: 3}
   lockOnCameraTarget: {fileID: 0}
 --- !u!4 &3174630911032394523 stripped
 Transform:
