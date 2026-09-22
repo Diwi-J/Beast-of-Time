@@ -8,12 +8,13 @@ public class HitDetector : MonoBehaviour
     public float chipDamagemultiplier = 0.1f;
 
     private CombatCollider self;
-
+    private PlayerSwordSound swordSound;
     private static readonly int ImpactHash = Animator.StringToHash("Impact");
 
     private void Awake()
     {
         self = GetComponent<CombatCollider>();
+        swordSound = GetComponent<PlayerSwordSound>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -41,6 +42,15 @@ public class HitDetector : MonoBehaviour
             {
                 Debug.Log($"{defender.name} Parried");
                 defender.ParryDistortion.Play();
+                var defenderSound = defender.GetComponent<PlayerSwordSound>();
+                if (defenderSound != null)
+                {
+                    defenderSound.PlayClash();
+                }
+                if (defender.gauge != null)
+                {
+                    defender.gauge.OnParrySuccess();
+                }
             }
             else
             {
@@ -54,6 +64,10 @@ public class HitDetector : MonoBehaviour
         else if (targetCC.type == ColliderType.Hurtbox)
         {
             Debug.Log($"{targetCC.Owner.name} took {damage} damage.");
+            if (swordSound != null)
+            {
+                swordSound.PlayHit();
+            }
             GetComponent<Collider>().enabled = false;
         }
     }

@@ -33,7 +33,7 @@ public class CharacterCombat : MonoBehaviour
 
     public bool IsBlocking { get; private set; }
     private float BlockStartTime;
-
+    public Gauge gauge;
     private void Awake()
     {
         animator = GetComponent<Animator>();
