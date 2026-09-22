@@ -87,7 +87,7 @@ public class CharacterCombat : MonoBehaviour
         {
             cc.GetComponent<Collider>().enabled = true;
 
-            // Debug.Log($"[CharacterCombat] Hitbox '{id}' collider enabled = {cc.GetComponent<Collider>().enabled}");
+           // Debug.Log($"[CharacterCombat] Hitbox '{id}' collider enabled = {cc.GetComponent<Collider>().enabled}");
         }
         else
         {
@@ -109,7 +109,7 @@ public class CharacterCombat : MonoBehaviour
     #region Hurtbox Controls
     public void EnableAllHurtboxes()
     {
-        foreach (var cc in hurtboxes.Values)
+        foreach(var cc in hurtboxes.Values)
         {
             cc.GetComponent<Collider>().enabled = true;
         }
@@ -180,7 +180,7 @@ public class CharacterCombat : MonoBehaviour
         {
             Animator EnemyAnim = enemy.GetComponent<Animator>();
             EnemyAnim.SetFloat(SlowDownParam, SlowDownDebuff);
-            Debug.Log($"{enemy.name} has been Slowed Down");
+            Debug.Log($"{enemy.name } has been Slowed Down");
         }
     }
 
