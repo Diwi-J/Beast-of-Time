@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+
 [RequireComponent(typeof(CombatCollider))]
 public class HitDetector : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class HitDetector : MonoBehaviour
     private CombatCollider self;
     private PlayerSwordSound swordSound;
     private static readonly int ImpactHash = Animator.StringToHash("Impact");
-
+    private Gauge gauge;
     private void Awake()
     {
         self = GetComponent<CombatCollider>();
@@ -42,15 +43,16 @@ public class HitDetector : MonoBehaviour
             {
                 Debug.Log($"{defender.name} Parried");
                 defender.ParryDistortion.Play();
-                var defenderSound = defender.GetComponent<PlayerSwordSound>();
-                if (defenderSound != null)
-                {
-                    defenderSound.PlayClash();
-                }
                 if (defender.gauge != null)
                 {
                     defender.gauge.OnParrySuccess();
                 }
+                var defenderSound = defender.GetComponent<PlayerSwordSound>();
+                if (defenderSound != null)
+                {
+                    swordSound.PlayClash();
+                }
+                
             }
             else
             {
