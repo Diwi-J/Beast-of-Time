@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5183921188294374301}
   m_Layer: 6
-  m_Name: LockOnTarget
-  m_TagString: Untagged
+  m_Name: Lock on Target
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -41,11 +41,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 101638067754729917, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_Name
-      value: HurtBox_Rigth_Lowerleg
+      value: HurtBox_RigthLowerleg
       objectReference: {fileID: 0}
     - target: {fileID: 101638067754729917, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_TagString
-      value: 'Enemy '
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 5111838481235166554, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_LocalScale.x
@@ -99,41 +99,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6358455093142212772, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
+      propertyPath: Id
+      value: HurtBox_RigthLowerleg
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 101638067754729917, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4244035511357913476}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
---- !u!1 &829232087636848726 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 101638067754729917, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
-  m_PrefabInstance: {fileID: 786741767266284011}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &4244035511357913476
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 829232087636848726}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
-  m_Controller: {fileID: 9100000, guid: a121824111be82a4fa4fac825039de51, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &5484249082546320561 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5111838481235166554, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
@@ -149,11 +123,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 101638067754729917, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_Name
-      value: HurtBox_Left_Lowerleg
+      value: HurtBox_LeftLowerleg
       objectReference: {fileID: 0}
     - target: {fileID: 101638067754729917, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_TagString
-      value: 'Enemy '
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 5111838481235166554, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_LocalScale.x
@@ -207,41 +181,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6358455093142212772, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
+      propertyPath: Id
+      value: HurtBox_LeftLowerleg
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 101638067754729917, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3222330303185600566}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
---- !u!1 &3192852635621166205 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 101638067754729917, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
-  m_PrefabInstance: {fileID: 3253390887995248064}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &3222330303185600566
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3192852635621166205}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
-  m_Controller: {fileID: 9100000, guid: a121824111be82a4fa4fac825039de51, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &7770604663287761050 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5111838481235166554, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
@@ -257,11 +205,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 101638067754729917, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_Name
-      value: HurtBox_Right_Leg
+      value: HurtBox_RightLeg
       objectReference: {fileID: 0}
     - target: {fileID: 101638067754729917, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_TagString
-      value: 'Enemy '
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 5111838481235166554, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_LocalScale.x
@@ -315,6 +263,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 6358455093142212772, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
+      propertyPath: Id
+      value: HurtBox_RightLeg
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -335,11 +287,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 101638067754729917, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_Name
-      value: HurtBox_Left_Leg
+      value: HurtBox_LeftLeg
       objectReference: {fileID: 0}
     - target: {fileID: 101638067754729917, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_TagString
-      value: 'Enemy '
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 5111838481235166554, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_LocalScale.x
@@ -393,6 +345,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -5
       objectReference: {fileID: 0}
+    - target: {fileID: 6358455093142212772, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
+      propertyPath: Id
+      value: HurtBox_LeftLeg
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -417,7 +373,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 101638067754729917, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_TagString
-      value: 'Enemy '
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 5111838481235166554, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_LocalScale.x
@@ -470,6 +426,10 @@ PrefabInstance:
     - target: {fileID: 5111838481235166554, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6358455093142212772, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
+      propertyPath: Id
+      value: HurtBox_Spine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -651,11 +611,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
       propertyPath: m_TagString
-      value: 'Enemy '
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 1082271958561512970, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1082271958561512970, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 1339101018200438765, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
       propertyPath: m_Layer
@@ -664,6 +628,10 @@ PrefabInstance:
     - target: {fileID: 2219207278016453899, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2219207278016453899, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 2715566404302941441, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
       propertyPath: m_Layer
@@ -765,6 +733,9 @@ PrefabInstance:
       addedObject: {fileID: 7612545362646700741}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 4801938726235235673}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 2826686282361447549}
   m_SourcePrefab: {fileID: 100100000, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
 --- !u!4 &1202437395109228160 stripped
@@ -810,13 +781,40 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.35
+  m_Height: 1.6
+  m_Radius: 0.45
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0.1}
+  m_Center: {x: 0, y: 0.8, z: 0.18}
+--- !u!54 &4801938726235235673
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4605752267124551122}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!114 &2826686282361447549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -829,6 +827,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b754a470514cc94d8e16249f358c7e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterCombat
+  parryStartUpDelay: 0.08
+  parryWindowDuration: 0.2
+  PoweredUpBoost: 1.25
+  SlowDownDebuff: 0.25
 --- !u!4 &4788726042073571523 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8169382868667117632, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
@@ -879,11 +881,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 101638067754729917, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_Name
-      value: HurtBox_Left_Forearm
+      value: HurtBox_LeftForearm
       objectReference: {fileID: 0}
     - target: {fileID: 101638067754729917, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_TagString
-      value: 'Enemy '
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 5111838481235166554, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_LocalScale.x
@@ -937,6 +939,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6358455093142212772, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
+      propertyPath: Id
+      value: HurtBox_LeftForearm
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -961,7 +967,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 101638067754729917, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_TagString
-      value: 'Enemy '
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 5111838481235166554, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_LocalScale.x
@@ -1015,6 +1021,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6358455093142212772, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
+      propertyPath: Id
+      value: HurtBox_Head
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1035,11 +1045,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 101638067754729917, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_Name
-      value: HurtBox_Left_Arm
+      value: HurtBox_LeftArm
       objectReference: {fileID: 0}
     - target: {fileID: 101638067754729917, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_TagString
-      value: 'Enemy '
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 5111838481235166554, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_LocalScale.x
@@ -1093,6 +1103,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6358455093142212772, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
+      propertyPath: Id
+      value: HurtBox_LeftForearm
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1113,11 +1127,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 101638067754729917, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_Name
-      value: HurtBox_Right_Forearm
+      value: HurtBox_RightForearm
       objectReference: {fileID: 0}
     - target: {fileID: 101638067754729917, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_TagString
-      value: 'Enemy '
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 5111838481235166554, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_LocalScale.x
@@ -1170,6 +1184,10 @@ PrefabInstance:
     - target: {fileID: 5111838481235166554, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6358455093142212772, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
+      propertyPath: Id
+      value: HurtBox_RightForearm
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1241,13 +1259,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -153.123
       objectReference: {fileID: 0}
+    - target: {fileID: 5165595489617836988, guid: f7b1c128d729fc44da534d5ddd461597, type: 3}
+      propertyPath: Id
+      value: HitBox_Claw
+      objectReference: {fileID: 0}
     - target: {fileID: 6510564498781030456, guid: f7b1c128d729fc44da534d5ddd461597, type: 3}
       propertyPath: m_Name
       value: HitBox_Claw
       objectReference: {fileID: 0}
     - target: {fileID: 6510564498781030456, guid: f7b1c128d729fc44da534d5ddd461597, type: 3}
       propertyPath: m_TagString
-      value: 'Enemy '
+      value: Enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1269,11 +1291,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 101638067754729917, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_Name
-      value: HurtBox_Right_Arm
+      value: HurtBox_RightArm
       objectReference: {fileID: 0}
     - target: {fileID: 101638067754729917, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_TagString
-      value: 'Enemy '
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 5111838481235166554, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_LocalScale.x
@@ -1326,6 +1348,10 @@ PrefabInstance:
     - target: {fileID: 5111838481235166554, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6358455093142212772, guid: 3afe9ff8f346d5943a9ecfe72828e043, type: 3}
+      propertyPath: Id
+      value: HurtBox_RightArm
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1397,13 +1423,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -25.692
       objectReference: {fileID: 0}
+    - target: {fileID: 5165595489617836988, guid: f7b1c128d729fc44da534d5ddd461597, type: 3}
+      propertyPath: Id
+      value: HitBox_Spike
+      objectReference: {fileID: 0}
     - target: {fileID: 6510564498781030456, guid: f7b1c128d729fc44da534d5ddd461597, type: 3}
       propertyPath: m_Name
       value: HitBox_Spike
       objectReference: {fileID: 0}
     - target: {fileID: 6510564498781030456, guid: f7b1c128d729fc44da534d5ddd461597, type: 3}
       propertyPath: m_TagString
-      value: 'Enemy '
+      value: Enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
