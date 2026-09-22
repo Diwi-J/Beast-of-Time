@@ -85,4 +85,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitDetector
   damage: 0
-  parryWindow: 0
+  chipDamagemultiplier: 0.1
