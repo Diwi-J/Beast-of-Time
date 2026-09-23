@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 
 [RequireComponent(typeof(Animator))]
@@ -15,12 +16,12 @@ public class PlayerCombat : MonoBehaviour
     private static readonly int IsBlockingHash = Animator.StringToHash("IsBlocking");
     private static readonly int PoweredUpHash = Animator.StringToHash("PoweredUp");
     private static readonly int IsFreeHash = Animator.StringToHash("IsFree");
-    [SerializeField]private PlayerSwordSound playerSwordSound;
+    [SerializeField] private PlayerSwordSound playerSwordSound;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
-       
+
         controls = new Controls();
 
         controls.Player.LightAttack.performed += _ => TryLightAttack();
@@ -49,10 +50,8 @@ public class PlayerCombat : MonoBehaviour
 
         animator.SetTrigger(lightAttackToggle ? LightAttack2Hash : LightAttack1Hash);
         lightAttackToggle = !lightAttackToggle;
-        if (playerSwordSound != null)
-        {
-            playerSwordSound.PlaySlice();
-        }
+
+        StartCoroutine(PlaySoundWhenAttackStarts());
 
     }
 
@@ -61,10 +60,21 @@ public class PlayerCombat : MonoBehaviour
         if (!IsFree()) return;
 
         animator.SetTrigger(HeavyAttackHash);
+        StartCoroutine(PlaySoundWhenAttackStarts());
+    }
+
+    private IEnumerator PlaySoundWhenAttackStarts()
+    {
+        // Wait until the Animator actually enters an Attack state.
+        while (!animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
+        {
+            yield return null;
+        }
+
+        // Now we know an attack animation actually started.
         if (playerSwordSound != null)
         {
             playerSwordSound.PlaySlice();
         }
-
     }
 }
