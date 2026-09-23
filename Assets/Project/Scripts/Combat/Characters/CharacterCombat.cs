@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEditor;
-using UnityEditor.EditorTools;
 using Unity.Collections.Tests.CoreCLR.TestJobs;
 
 public class CharacterCombat : MonoBehaviour
