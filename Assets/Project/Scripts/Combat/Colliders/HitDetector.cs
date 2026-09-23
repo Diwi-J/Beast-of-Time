@@ -64,7 +64,7 @@ public class HitDetector : MonoBehaviour
                 var defenderSound = defender.GetComponent<PlayerSwordSound>();
                 if (defenderSound != null)
                 {
-                    defenderSound.PlayClash();
+                    defenderSound.PlayHit();
                 }
             }
 
@@ -73,7 +73,11 @@ public class HitDetector : MonoBehaviour
         else if (targetCC.type == ColliderType.Hurtbox)
         {
             Debug.Log($"{targetCC.Owner.name} took {damage} damage.");
-            
+            if (playerSwordSound != null)
+            {
+                playerSwordSound.PlayHit();
+            }
+            GetComponent<Collider>().enabled = false;
         }
     }
 }
