@@ -201,4 +201,5 @@ MonoBehaviour:
   sliceClip: {fileID: 8300000, guid: 908496fbb72b83e4d9ecdfff58c12b11, type: 3}
   clashClip: {fileID: 8300000, guid: b81870e37cf1e9d43b6ad0e50feb26b4, type: 3}
   hitClip: {fileID: 8300000, guid: 0f8f2d16154c2894eae149cb8b4ef4b7, type: 3}
+  chargeClip: {fileID: 8300000, guid: 16d18d8663bd84347ba8ea9e59ed58be, type: 3}
   volume: 1

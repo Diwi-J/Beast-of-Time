@@ -14,6 +14,7 @@ public class PlayerSwordSound : MonoBehaviour
 
     // Sword cutting through enemy. 
     [SerializeField] private AudioClip hitClip;
+    [SerializeField] private AudioClip chargeClip;
 
     [SerializeField, Range(0f, 1f)] private float volume = 1f;
 
@@ -31,6 +32,10 @@ public class PlayerSwordSound : MonoBehaviour
     public void PlayDraw()
     {
         PlayClip(drawClip, 1f);
+    }
+    public void PlayCharge()
+    {
+        PlayClip(chargeClip, 1f);
     }
 
     // Call this at the moment the sword swings.

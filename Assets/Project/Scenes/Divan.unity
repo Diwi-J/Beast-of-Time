@@ -3071,6 +3071,7 @@ MonoBehaviour:
   parryFillAmount: 0.34
   drainRatePerSecond: 0.05
   fillSpeed: 3
+  playerSwordSound: {fileID: 1992939179}
 --- !u!1 &354290494
 GameObject:
   m_ObjectHideFlags: 0
@@ -28099,6 +28100,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2826686282361447549, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
+      propertyPath: playerSwordSound
+      value: 
+      objectReference: {fileID: 1992939179}
     - target: {fileID: 3792378212866652008, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.40557
@@ -36084,6 +36089,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 581838295}
     - target: {fileID: 4556146938186454585, guid: f753439cd63baeb499d942c83567ca26, type: 3}
+      propertyPath: playerSwordSound
+      value: 
+      objectReference: {fileID: 1992939179}
+    - target: {fileID: 4556146938186454585, guid: f753439cd63baeb499d942c83567ca26, type: 3}
       propertyPath: TimeDilationDistorion
       value: 
       objectReference: {fileID: 1632911026}
@@ -40586,6 +40595,7 @@ MonoBehaviour:
   sliceClip: {fileID: 8300000, guid: 908496fbb72b83e4d9ecdfff58c12b11, type: 3}
   clashClip: {fileID: 8300000, guid: b81870e37cf1e9d43b6ad0e50feb26b4, type: 3}
   hitClip: {fileID: 8300000, guid: 0f8f2d16154c2894eae149cb8b4ef4b7, type: 3}
+  chargeClip: {fileID: 8300000, guid: 16d18d8663bd84347ba8ea9e59ed58be, type: 3}
   volume: 1
 --- !u!1 &2008953897
 GameObject:

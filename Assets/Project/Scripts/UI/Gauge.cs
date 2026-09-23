@@ -32,7 +32,7 @@ public class Gauge : MonoBehaviour
 
     // Fired when the gauge drains to empty on its own (not on manual stop).
     public event Action OnGaugeEmpty;
-
+    public PlayerSwordSound playerSwordSound;
     private void Awake()
     {
         // Background bar — the empty frame, built and positioned entirely in code.
@@ -92,6 +92,10 @@ public class Gauge : MonoBehaviour
     {
         currentValue = Mathf.Clamp01(currentValue + parryFillAmount);
         Debug.Log($"Gauge filled to: {currentValue}");
+        if (playerSwordSound != null)
+        {
+            playerSwordSound.PlayClash();
+        }
     }
 
     public bool StartTimeDilation()
@@ -102,10 +106,15 @@ public class Gauge : MonoBehaviour
             Debug.Log("[Gauge] Refused to start — gauge is empty.");
             return false;
         }
-
+        if (playerSwordSound != null)
+        {
+            playerSwordSound.PlayCharge();
+        }
         isDraining = true;
         Debug.Log("[Gauge] isDraining set to TRUE");
         return true;
+       
+
     }
 
     public void StopTimeDilation()

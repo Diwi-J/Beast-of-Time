@@ -33,11 +33,12 @@ public class CharacterCombat : MonoBehaviour
     public bool IsBlocking { get; private set; }
     private float BlockStartTime;
     public Gauge gauge;
+    public PlayerSwordSound playerSwordSound;
     private void Awake()
     {
         animator = GetComponent<Animator>();
         controls = new Controls();
-
+        playerSwordSound = GetComponent<PlayerSwordSound>();
         controls.Player.PowerUp.performed += PowerUp;
         
 
@@ -151,6 +152,10 @@ public class CharacterCombat : MonoBehaviour
     {
         float elapsed = Time.time - BlockStartTime;
         return elapsed >= parryStartUpDelay && elapsed <= (parryStartUpDelay + parryWindowDuration);
+        if (playerSwordSound != null)
+        {
+            playerSwordSound.PlayClash();
+        }
     }
 
     #region Time Dilation
@@ -171,6 +176,11 @@ public class CharacterCombat : MonoBehaviour
         animator.SetFloat(PowerUpParam, PoweredUpBoost);
         TimeDilationDistorion.Play();
         ApplySlowDown();
+        if (playerSwordSound != null)
+        {
+            playerSwordSound.PlayCharge();
+        }
+
     }
 
     void PowerDown()
@@ -197,6 +207,10 @@ public class CharacterCombat : MonoBehaviour
             Animator EnemyAnim = enemy.GetComponent<Animator>();
             EnemyAnim.SetFloat(SlowDownParam, SlowDownDebuff);
             Debug.Log($"{enemy.name} has been Slowed Down");
+        }
+        if (playerSwordSound != null)
+        {
+            playerSwordSound.PlayCharge();
         }
     }
 
