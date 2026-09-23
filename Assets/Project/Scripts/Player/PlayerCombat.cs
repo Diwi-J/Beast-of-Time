@@ -15,10 +15,12 @@ public class PlayerCombat : MonoBehaviour
     private static readonly int IsBlockingHash = Animator.StringToHash("IsBlocking");
     private static readonly int PoweredUpHash = Animator.StringToHash("PoweredUp");
     private static readonly int IsFreeHash = Animator.StringToHash("IsFree");
+    [SerializeField]private PlayerSwordSound playerSwordSound;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
+       
         controls = new Controls();
 
         controls.Player.LightAttack.performed += _ => TryLightAttack();
@@ -35,24 +37,23 @@ public class PlayerCombat : MonoBehaviour
     {
         AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
 
-        if (!state.IsTag("Attack") && !state.IsTag("Block") && state.IsTag("Focus"))
-        {
-            animator.SetBool(IsFreeHash, true);
-            return true;
-        }
-        else
-        {
-            animator.SetBool(IsFreeHash, false);
-            return false;
-        }
+        bool free = !state.IsTag("Attack") && !state.IsTag("Block");
+        animator.SetBool(IsFreeHash, free);
+        return free;
     }
 
     private void TryLightAttack()
     {
+        Debug.Log($"TryLightAttack called, IsFree = {IsFree()}");
         if (!IsFree()) return;
 
         animator.SetTrigger(lightAttackToggle ? LightAttack2Hash : LightAttack1Hash);
         lightAttackToggle = !lightAttackToggle;
+        if (playerSwordSound != null)
+        {
+            playerSwordSound.PlaySlice();
+        }
+
     }
 
     private void TryHeavyAttack()
@@ -60,5 +61,10 @@ public class PlayerCombat : MonoBehaviour
         if (!IsFree()) return;
 
         animator.SetTrigger(HeavyAttackHash);
+        if (playerSwordSound != null)
+        {
+            playerSwordSound.PlaySlice();
+        }
+
     }
 }

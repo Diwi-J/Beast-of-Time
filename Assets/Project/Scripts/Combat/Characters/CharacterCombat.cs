@@ -40,7 +40,10 @@ public class CharacterCombat : MonoBehaviour
         controls = new Controls();
 
         controls.Player.PowerUp.performed += PowerUp;
+        
 
+        if (gauge != null) gauge.OnGaugeEmpty += HandleGaugeEmpty; // stop when gauge runs dry
+        
         //distortion = GetComponentInChildren<ParticleSystem>();
 
         //if (distortion != null) Debug.Log("distorion not found");
@@ -154,12 +157,20 @@ public class CharacterCombat : MonoBehaviour
     #region Time Dilation
     void PowerUp(InputAction.CallbackContext ctx)
     {
+        Debug.Log("[CharacterCombat] PowerUp INPUT FIRED");
         if (!CompareTag("Player")) return;
+        if (gauge == null)
+        {
+            Debug.Log("[CharacterCombat] gauge is NULL");
+            return;
+        }
+
+        bool started = gauge.StartTimeDilation();
+        Debug.Log($"[CharacterCombat] StartTimeDilation returned: {started}");
+        if (!started) return;
 
         animator.SetFloat(PowerUpParam, PoweredUpBoost);
-
         TimeDilationDistorion.Play();
-
         ApplySlowDown();
     }
 
@@ -172,6 +183,12 @@ public class CharacterCombat : MonoBehaviour
 
         RemoveSlowDown();
 
+    }
+    
+
+    void HandleGaugeEmpty()
+    {
+        PowerDown();
     }
 
     void ApplySlowDown()
@@ -188,7 +205,8 @@ public class CharacterCombat : MonoBehaviour
     {
         foreach (var enemy in Enemies)
         {
-            animator.SetFloat(PowerUpParam, 1);
+            Animator EnemyAnim = enemy.GetComponent<Animator>();
+            EnemyAnim.SetFloat(SlowDownParam, 1); // reset enemy's own SlowDown value, on their own Animator
         }
     }
     #endregion 
@@ -203,6 +221,10 @@ public class CharacterCombat : MonoBehaviour
     {
         controls.Disable();
     }
+    private void OnDestroy()
+    {
+        Enemies.Remove(this);
+        if (gauge != null) gauge.OnGaugeEmpty -= HandleGaugeEmpty;
+    }
 
-    private void OnDestroy() => Enemies.Remove(this);
 }

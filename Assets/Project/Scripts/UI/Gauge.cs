@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-
+using System;
 public class Gauge : MonoBehaviour
 {
     [Header("Bar Setup")]
@@ -14,10 +14,10 @@ public class Gauge : MonoBehaviour
     [SerializeField, Range(0.01f, 1f)] private float parryFillAmount = 0.34f;
 
     // How much the gauge drains per second while time dilation is active.
-    [SerializeField] private float drainRatePerSecond = 0.25f;
+    [SerializeField] private float drainRatePerSecond = 0.02f;
 
     // How fast the bar visually catches up when the value changes.
-    [SerializeField] private float fillSpeed = 6f;
+    [SerializeField] private float fillSpeed = 2f;
 
     // The real gauge value, and the smoothed value shown on screen.
     private float currentValue = 0f;
@@ -29,6 +29,9 @@ public class Gauge : MonoBehaviour
     // Built at runtime, so nothing needs to exist in the scene beforehand.
     private RectTransform fillRect;
     private float maxFillWidth;
+
+    // Fired when the gauge drains to empty on its own (not on manual stop).
+    public event Action OnGaugeEmpty;
 
     private void Awake()
     {
@@ -63,23 +66,22 @@ public class Gauge : MonoBehaviour
 
     private void Update()
     {
-        // Drain the gauge over time while the ability is active.
         if (isDraining)
         {
-            currentValue -= drainRatePerSecond * Time.deltaTime;
+            currentValue -= drainRatePerSecond * Time.unscaledDeltaTime;
+            Debug.Log($"[Gauge] Draining. currentValue = {currentValue}");
 
-            // Auto-stop once the gauge runs out, so the ability can't go negative.
             if (currentValue <= 0f)
             {
                 currentValue = 0f;
+                Debug.Log("[Gauge] Hit empty — calling StopTimeDilation and firing OnGaugeEmpty");
                 StopTimeDilation();
+                OnGaugeEmpty?.Invoke();
             }
         }
 
-        // Move the displayed value closer to the real value each frame so the bar animates.
-        displayedValue = Mathf.Lerp(displayedValue, currentValue, Time.deltaTime * fillSpeed);
+        displayedValue = Mathf.Lerp(displayedValue, currentValue, Time.unscaledDeltaTime * fillSpeed);
 
-        // Resize the fill's width directly — no Image.fillAmount needed.
         Vector2 size = fillRect.sizeDelta;
         size.x = maxFillWidth * displayedValue;
         fillRect.sizeDelta = size;
@@ -92,25 +94,25 @@ public class Gauge : MonoBehaviour
         Debug.Log($"Gauge filled to: {currentValue}");
     }
 
-    // Call this when the player starts using time dilation. Returns false if the gauge is empty.
     public bool StartTimeDilation()
     {
+        Debug.Log($"[Gauge] StartTimeDilation called. currentValue = {currentValue}");
         if (currentValue <= 0f)
         {
+            Debug.Log("[Gauge] Refused to start — gauge is empty.");
             return false;
         }
 
         isDraining = true;
+        Debug.Log("[Gauge] isDraining set to TRUE");
         return true;
     }
 
-    // Call this when the player releases/cancels time dilation.
     public void StopTimeDilation()
     {
+        Debug.Log("[Gauge] StopTimeDilation called. isDraining set to FALSE");
         isDraining = false;
     }
-
-    // True while time dilation is actively draining the gauge.
     public bool IsDraining => isDraining;
 
     // Empties the gauge, e.g. when the player dies or a fight ends.
