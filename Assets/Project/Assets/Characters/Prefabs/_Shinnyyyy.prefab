@@ -934,6 +934,9 @@ PrefabInstance:
       addedObject: {fileID: 351124968081760743}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 866c7ac7159653347b385d9df53a202a, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 5860454506744294027}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 866c7ac7159653347b385d9df53a202a, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 4556146938186454585}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 866c7ac7159653347b385d9df53a202a, type: 3}
       insertIndex: -1
@@ -1026,6 +1029,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 130769fa0225d0b4f862b8aada9b4701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
+--- !u!114 &5860454506744294027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2727789734065532453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2879636c6d4fde545ad4709fce2d654e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  maxHealth: 100
 --- !u!114 &4556146938186454585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1040,8 +1056,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterCombat
   parryStartUpDelay: 0.08
   parryWindowDuration: 0.2
+  blockDamageMultiplier: 0.1
   PoweredUpBoost: 1.25
   SlowDownDebuff: 0.1
+  deathTrigger: killed
   TimeDilationDistorion: {fileID: 8920245300222442725}
   ParryDistortion: {fileID: 236808867906169528}
   gauge: {fileID: 0}

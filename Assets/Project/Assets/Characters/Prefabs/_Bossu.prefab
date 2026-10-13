@@ -736,6 +736,9 @@ PrefabInstance:
       addedObject: {fileID: 4801938726235235673}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 4406039413057315425}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 2826686282361447549}
   m_SourcePrefab: {fileID: 100100000, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
 --- !u!4 &1202437395109228160 stripped
@@ -815,6 +818,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4406039413057315425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4605752267124551122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2879636c6d4fde545ad4709fce2d654e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  maxHealth: 100
 --- !u!114 &2826686282361447549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -829,8 +845,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterCombat
   parryStartUpDelay: 0.08
   parryWindowDuration: 0.2
+  blockDamageMultiplier: 0.1
   PoweredUpBoost: 1.25
   SlowDownDebuff: 0.25
+  deathTrigger: killed
   TimeDilationDistorion: {fileID: 0}
   ParryDistortion: {fileID: 0}
   gauge: {fileID: 0}

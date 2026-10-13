@@ -16,11 +16,18 @@ public class CharacterCombat : MonoBehaviour
     public float parryStartUpDelay = 0.08f;
     public float parryWindowDuration = 0.2f;
 
+    [Header("Damage")]
+    public float blockDamageMultiplier = 0.1f;
+
     [Header("Time Dilation")]
     public float PoweredUpBoost = 1.25f;
     public float SlowDownDebuff = 0.25f;
     private static readonly int PowerUpParam = Animator.StringToHash("PowerUp");
     private static readonly int SlowDownParam = Animator.StringToHash("SlowDown");
+
+    [HideInInspector]
+    [Header("Death")]
+    private static readonly int KilledParam = Animator.StringToHash("Killed");
 
     [Header("VFX")]
     [SerializeField] private ParticleSystem TimeDilationDistorion;
@@ -29,12 +36,17 @@ public class CharacterCombat : MonoBehaviour
     public static List<CharacterCombat> Enemies = new();
     public static CharacterCombat PlayerInstance { get; private set; }
 
+    public static event System.Action<CharacterCombat> CharacterDied;
+
+    public Health Health { get; private set; }
     public bool IsBlocking { get; private set; }
+    private bool IsDead;
     private float BlockStartTime;
     public Gauge gauge;
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        Health = GetComponent<Health>();
         controls = new Controls();
 
         controls.Player.PowerUp.performed += PowerUp;
@@ -75,10 +87,34 @@ public class CharacterCombat : MonoBehaviour
 
         EnableAllHurtboxes();
     }
+    #region Death
+    private void HandleDeath()
+    {
+        if (IsDead) return;
+        IsDead = true;
+        IsBlocking = false;
+
+        foreach (var cc in hitboxes.Values)
+            cc.GetComponent<Collider>().enabled = false;
+
+        DisableAllHurtboxes();
+
+        if (blockbox != null)
+            blockbox.GetComponent<Collider>().enabled = false;
+
+        Enemies.Remove(this);
+        controls.Disable();
+        animator.SetTrigger(KilledParam);
+
+        CharacterDied?.Invoke(this);
+    }
+    #endregion 
 
     #region HitBox Controls
     public void Enablehitbox(string id)
     {
+        if (IsDead) return;
+
         Debug.Log($"[{gameObject.name}] Enablehitbox called with id: {id}");
 
         if (hitboxes.TryGetValue(id, out var cc))
@@ -107,6 +143,8 @@ public class CharacterCombat : MonoBehaviour
     #region Hurtbox Controls
     public void EnableAllHurtboxes()
     {
+        if (IsDead) return;
+
         foreach(var cc in hurtboxes.Values)
         {
             cc.GetComponent<Collider>().enabled = true;
@@ -125,6 +163,8 @@ public class CharacterCombat : MonoBehaviour
     #region Blockbox Controls
     public void EnableBlockbox()
     {
+        if (IsDead) return;
+
         Debug.Log($"[{gameObject.name}] Blockbox Enabled");
 
         IsBlocking = true;
@@ -195,11 +235,17 @@ public class CharacterCombat : MonoBehaviour
     {
         controls.Enable();
 
+        if (Health != null)
+            Health.OnDeath -= HandleDeath;
+
     }
 
     private void OnDisable()
     {
         controls.Disable();
+
+        if (Health != null)
+            Health.OnDeath += HandleDeath;
     }
 
     private void OnDestroy() => Enemies.Remove(this);
