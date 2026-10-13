@@ -415,16 +415,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
   aggroRange: 30
-  walkSpeedParam: 0.4
+  walkSpeedParam: 0.5
   runSpeedParam: 1
   runDistance: 6
   stopDistance: 2.5
   rotationSpeed: 8
   speedDamping: 0.1
   repathInterval: 0.2
-  meleeRange: 2.2
+  meleeRange: 3
   attackAngle: 35
-  attackCooldown: 0.5
+  attackCooldown: 0
   attackTrackTime: 0.3
   attackTag: Attack
   attackEnterTimeout: 0.5
@@ -726,6 +726,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2826686282361447549, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
+      propertyPath: deathTrigger
+      value: Killed
+      objectReference: {fileID: 0}
     - target: {fileID: 3792378212866652008, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.40557
@@ -985,6 +989,14 @@ PrefabInstance:
     - target: {fileID: 4355023663663479402, guid: f753439cd63baeb499d942c83567ca26, type: 3}
       propertyPath: m_LocalPosition.z
       value: 8.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 4556146938186454585, guid: f753439cd63baeb499d942c83567ca26, type: 3}
+      propertyPath: deathTrigger
+      value: Killed
+      objectReference: {fileID: 0}
+    - target: {fileID: 5860454506744294027, guid: f753439cd63baeb499d942c83567ca26, type: 3}
+      propertyPath: maxHealth
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6820330369001683608, guid: f753439cd63baeb499d942c83567ca26, type: 3}
       propertyPath: lockOnTarget

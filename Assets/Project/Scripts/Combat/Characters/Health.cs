@@ -33,6 +33,7 @@ public class Health : MonoBehaviour
         if (Current <= 0f)
         {
             IsDead = true;
+            Debug.Log($"[Health] {name} reached 0, firing OnDeath");
             OnDeath?.Invoke();
         }
     }
