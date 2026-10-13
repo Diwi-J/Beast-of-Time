@@ -1,4 +1,5 @@
 using UnityEngine;
+using Unity.Cinemachine;
 using UnityEngine.InputSystem;
 
 /// <summary>
@@ -14,6 +15,7 @@ public class PlayerControls : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform cameraTransform;
+    [SerializeField] private CinemachineOrbitalFollow orbitalFollow;
 
     [Header("Rotation")]
     [SerializeField] private float freelookRotationSpeed = 10f;
@@ -124,8 +126,16 @@ public class PlayerControls : MonoBehaviour
         if (isLocked || isTurning || inputMagnitude <= 0.1f)
             return;
 
-        Vector3 camForward = Vector3.Scale(cameraTransform.forward, new Vector3(1, 0, 1)).normalized;
-        Vector3 camRight = Vector3.Scale(cameraTransform.right, new Vector3(1, 0, 1)).normalized;
+        //Get the camera's horizontal orbit angle.
+        float cameraYaw = orbitalFollow.HorizontalAxis.Value;
+
+        //Convert the horizontal angle into a rotation.
+        Quaternion yawRotation = Quaternion.Euler(0f, cameraYaw, 0f);
+
+        //Calculate movement directions using the orbit angle.
+        Vector3 camForward = yawRotation * Vector3.forward;
+        Vector3 camRight = yawRotation * Vector3.right;
+
         Vector3 desiredDirection = (camForward * moveInput.y + camRight * moveInput.x).normalized;
 
         float facingDot = Vector3.Dot(transform.forward, desiredDirection);
