@@ -489,6 +489,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7963070265621199738, guid: 7b29c3c435316534da1133ec01a557e3, type: 3}
   m_PrefabInstance: {fileID: 1533917546515302302}
   m_PrefabAsset: {fileID: 0}
+--- !u!198 &8920245300222442725 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7963070265621199739, guid: 7b29c3c435316534da1133ec01a557e3, type: 3}
+  m_PrefabInstance: {fileID: 1533917546515302302}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2961793635078886260
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -926,9 +931,6 @@ PrefabInstance:
       addedObject: {fileID: 1724504056849013454}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 866c7ac7159653347b385d9df53a202a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8981288301009899438}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 866c7ac7159653347b385d9df53a202a, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 351124968081760743}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 866c7ac7159653347b385d9df53a202a, type: 3}
       insertIndex: -1
@@ -936,6 +938,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 866c7ac7159653347b385d9df53a202a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7294460315931692114}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 866c7ac7159653347b385d9df53a202a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6820330369001683608}
   m_SourcePrefab: {fileID: 100100000, guid: 866c7ac7159653347b385d9df53a202a, type: 3}
 --- !u!4 &89042299658504338 stripped
 Transform:
@@ -1009,36 +1014,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &8981288301009899438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2727789734065532453}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 797dea7f575a7f347bf4d1e4eaff52f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerControls
-  cameraTransform: {fileID: 0}
-  freelookWalkSpeed: 2
-  freelookRunSpeed: 5
-  freelookRotationSpeed: 10
-  speedDamping: 0.1
-  turnBackDotThreshold: -0.5
-  cameraFocus: {fileID: 7294460315931692114}
-  focusWalkSpeed: 2
-  focusRunSpeed: 4
-  focusRotationSpeed: 12
-  focusMoveDamping: 0.1
-  freelookWalkThreshold: 1.33
-  freelookRunThreshold: 2.93
-  focusWalkMagnitude: 1
-  focusRunMagnitude: 3
-  gravity: -15
-  groundedGravity: -2
-  lockOnTarget: {fileID: 0}
 --- !u!114 &351124968081760743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1067,8 +1042,9 @@ MonoBehaviour:
   parryWindowDuration: 0.2
   PoweredUpBoost: 1.25
   SlowDownDebuff: 0.1
-  TimeDilationDistorion: {fileID: 0}
-  ParryDistortion: {fileID: 0}
+  TimeDilationDistorion: {fileID: 8920245300222442725}
+  ParryDistortion: {fileID: 236808867906169528}
+  gauge: {fileID: 0}
 --- !u!114 &7294460315931692114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1094,6 +1070,36 @@ MonoBehaviour:
   playerCamera: {fileID: 0}
   inputAxisController: {fileID: 0}
   lockOnCameraTarget: {fileID: 0}
+--- !u!114 &6820330369001683608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2727789734065532453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23b4d64b5a0fce94383f87a38e9574d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerControls
+  cameraTransform: {fileID: 0}
+  freelookRotationSpeed: 10
+  focusRotationSpeed: 12
+  turnBackDotThreshold: -0.5
+  turnTimeout: 1.5
+  speedDamping: 0.1
+  focusMoveDamping: 0.1
+  freelookRunThreshold: 2.93
+  focusWalkMagnitude: 1
+  focusRunMagnitude: 3
+  rootMotionMultiplier: 1
+  lockedTags:
+  - Attack
+  - Block
+  allowRootMotionWhileLocked: 1
+  gravity: -15
+  groundedGravity: -2
+  lockOnTarget: {fileID: 0}
 --- !u!4 &3174630911032394523 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 366175167995203695, guid: 866c7ac7159653347b385d9df53a202a, type: 3}
@@ -1737,6 +1743,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d891256be5bd9941a9671b16e33c7ab, type: 3}
+--- !u!198 &236808867906169528 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7963070265621199739, guid: 8d891256be5bd9941a9671b16e33c7ab, type: 3}
+  m_PrefabInstance: {fileID: 7911648472731095491}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &236808867906169529 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7963070265621199738, guid: 8d891256be5bd9941a9671b16e33c7ab, type: 3}

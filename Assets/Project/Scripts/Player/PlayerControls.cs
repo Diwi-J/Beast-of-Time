@@ -1,6 +1,13 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Root-motion player controller.
+/// Input only drives Animator parameters and scripted rotation.
+/// Horizontal movement comes from the Animator (animator.deltaPosition).
+/// Vertical movement (gravity) is scripted.
+/// Everything is applied through a single CharacterController.Move in OnAnimatorMove.
+/// </summary>
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(CharacterController))]
 public class PlayerControls : MonoBehaviour
@@ -8,27 +15,32 @@ public class PlayerControls : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform cameraTransform;
 
-    [Header("Freelook Speeds")]
-    [SerializeField] private float freelookWalkSpeed = 2f;
-    [SerializeField] private float freelookRunSpeed = 5f;
+    [Header("Rotation")]
     [SerializeField] private float freelookRotationSpeed = 10f;
-    [SerializeField] private float speedDamping = 0.1f;
+    [SerializeField] private float focusRotationSpeed = 12f;
 
     [Header("Freelook 180 Turn")]
     [SerializeField] private float turnBackDotThreshold = -0.5f; // input opposes facing beyond this, trigger 180
-    [SerializeField] private PlayerCameraFocus cameraFocus;
+    [SerializeField] private float turnTimeout = 1.5f;           // failsafe if OnTurnComplete never fires
 
-    [Header("Focus Speeds")]
-    [SerializeField] private float focusWalkSpeed = 2f;
-    [SerializeField] private float focusRunSpeed = 4f;
-    [SerializeField] private float focusRotationSpeed = 12f;
+    [Header("Animator Damping")]
+    [SerializeField] private float speedDamping = 0.1f;
     [SerializeField] private float focusMoveDamping = 0.1f;
 
     [Header("Blend Tree Ranges")]
-    [SerializeField] private float freelookWalkThreshold = 1.33f;
     [SerializeField] private float freelookRunThreshold = 2.93f;
     [SerializeField] private float focusWalkMagnitude = 1f;
     [SerializeField] private float focusRunMagnitude = 3f;
+
+    [Header("Root Motion")]
+    [Tooltip("Scales horizontal root motion. 1 = exactly what the clip does. Tuning knob only.")]
+    [SerializeField] private float rootMotionMultiplier = 1f;
+
+    [Header("Locked States")]
+    [Tooltip("Animator state tags that block steering and rotation. Match these to PlayerCombat.IsFree().")]
+    [SerializeField] private string[] lockedTags = { "Attack", "Block" };
+    [Tooltip("If true, the clip's own root motion (lunges, steps) still moves the player while locked.")]
+    [SerializeField] private bool allowRootMotionWhileLocked = true;
 
     [Header("Gravity")]
     [SerializeField] private float gravity = -15f;
@@ -40,10 +52,12 @@ public class PlayerControls : MonoBehaviour
 
     private Vector2 moveInput;
     private bool isFocused;
-    private float verticalVelocity;
+    private bool isLocked;
     private bool isTurning;
+    private float turnTimer;
+    private float verticalVelocity;
 
-    // externally settable by PlayerCameraFocus, or pulled directly if you prefer wiring it there
+    // Set via SetLockOnTarget / ClearLockOnTarget, or directly by other scripts.
     public Transform lockOnTarget;
 
     private static readonly int SpeedHash = Animator.StringToHash("Speed");
@@ -58,6 +72,9 @@ public class PlayerControls : MonoBehaviour
         controller = GetComponent<CharacterController>();
         controls = new Controls();
 
+        // Root motion stops if the Animator is culled while off-screen.
+        animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+
         controls.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
         controls.Player.Move.canceled += ctx => moveInput = Vector2.zero;
 
@@ -71,28 +88,41 @@ public class PlayerControls : MonoBehaviour
     private void OnEnable() => controls.Enable();
     private void OnDisable() => controls.Disable();
 
+    public void SetLockOnTarget(Transform target) => lockOnTarget = target;
+    public void ClearLockOnTarget() => lockOnTarget = null;
+
+    // ---------------------------------------------------------------- Update
+
     private void Update()
     {
-        Vector3 motion = isFocused ? UpdateFocus() : UpdateFreelook();
+        isLocked = IsInLockedState();
+
+        if (isTurning)
+        {
+            turnTimer += Time.deltaTime;
+            if (turnTimer > turnTimeout)
+                EndTurn();
+        }
+
+        if (isFocused)
+            UpdateFocus();
+        else
+            UpdateFreelook();
 
         if (controller.isGrounded)
             verticalVelocity = groundedGravity;
         else
             verticalVelocity += gravity * Time.deltaTime;
-
-        motion.y = verticalVelocity;
-        controller.Move(motion * Time.deltaTime);
     }
 
-    private Vector3 UpdateFreelook()
+    private void UpdateFreelook()
     {
         float inputMagnitude = moveInput.magnitude;
 
-        float targetSpeedParam = Mathf.Lerp(0f, freelookRunThreshold, inputMagnitude);
-        animator.SetFloat(SpeedHash, targetSpeedParam, speedDamping, Time.deltaTime);
+        animator.SetFloat(SpeedHash, inputMagnitude * freelookRunThreshold, speedDamping, Time.deltaTime);
 
-        if (inputMagnitude <= 0.1f || isTurning)
-            return Vector3.zero;
+        if (isLocked || isTurning || inputMagnitude <= 0.1f)
+            return;
 
         Vector3 camForward = Vector3.Scale(cameraTransform.forward, new Vector3(1, 0, 1)).normalized;
         Vector3 camRight = Vector3.Scale(cameraTransform.right, new Vector3(1, 0, 1)).normalized;
@@ -100,49 +130,103 @@ public class PlayerControls : MonoBehaviour
 
         float facingDot = Vector3.Dot(transform.forward, desiredDirection);
 
-        // Input wants a direction roughly opposite current facing -> trigger 180, don't move this frame
+        // Input wants a direction roughly opposite current facing: play the 180 clip.
         if (facingDot < turnBackDotThreshold)
         {
             animator.SetTrigger(TurnHash);
             isTurning = true;
-            return Vector3.zero;
+            turnTimer = 0f;
+            return;
         }
 
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(desiredDirection), freelookRotationSpeed * Time.deltaTime);
-
-        float speed = Mathf.Lerp(freelookWalkSpeed, freelookRunSpeed, inputMagnitude);
-        return transform.forward * speed * inputMagnitude;
+        // Face the input direction. Root motion then carries the character forward.
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            Quaternion.LookRotation(desiredDirection),
+            freelookRotationSpeed * Time.deltaTime);
     }
 
-    // Call this via an Animation Event at the end of the "180" clip
-    public void OnTurnComplete()
+    private void UpdateFocus()
     {
-        isTurning = false;
-        cameraFocus?.SnapCameraBehind();
-    }
-
-    private Vector3 UpdateFocus()
-    {
-        if (lockOnTarget != null)
+        if (lockOnTarget != null && !isLocked && !isTurning)
         {
             Vector3 toTarget = lockOnTarget.position - transform.position;
             toTarget.y = 0f;
             if (toTarget.sqrMagnitude > 0.001f)
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(toTarget), focusRotationSpeed * Time.deltaTime);
+            {
+                transform.rotation = Quaternion.Slerp(
+                    transform.rotation,
+                    Quaternion.LookRotation(toTarget),
+                    focusRotationSpeed * Time.deltaTime);
+            }
         }
 
         float inputMagnitude = moveInput.magnitude;
         float blendMagnitude = Mathf.Lerp(focusWalkMagnitude, focusRunMagnitude, inputMagnitude);
         Vector2 scaledMove = moveInput.normalized * blendMagnitude * inputMagnitude;
 
+        // The strafe clips carry their own direction, so these two values are all movement needs.
         animator.SetFloat(MoveXHash, inputMagnitude > 0.01f ? scaledMove.x : 0f, focusMoveDamping, Time.deltaTime);
         animator.SetFloat(MoveZHash, inputMagnitude > 0.01f ? scaledMove.y : 0f, focusMoveDamping, Time.deltaTime);
+    }
 
-        if (inputMagnitude <= 0.1f)
-            return Vector3.zero;
+    // ----------------------------------------------------------- Root motion
 
-        Vector3 localDirection = (transform.right * moveInput.x + transform.forward * moveInput.y).normalized;
-        float speed = Mathf.Lerp(focusWalkSpeed, focusRunSpeed, inputMagnitude);
-        return localDirection * speed * inputMagnitude;
+    // Runs after Update, once the Animator has evaluated this frame.
+    // Defining this method makes Unity stop applying root motion automatically.
+    private void OnAnimatorMove()
+    {
+        // The 180 clip rotates the root. Scripted rotation is paused while it plays.
+        if (isTurning)
+            transform.rotation = animator.deltaRotation * transform.rotation;
+
+        Vector3 delta = animator.deltaPosition;
+
+        if (isLocked && !allowRootMotionWhileLocked)
+            delta = Vector3.zero;
+
+        delta *= rootMotionMultiplier;
+        delta.y = verticalVelocity * Time.deltaTime; // Y is always scripted
+
+        controller.Move(delta);
+    }
+
+    // ----------------------------------------------------------------- Turn
+
+    // Call this via an Animation Event at the end of the "180" clip.
+    public void OnTurnComplete()
+    {
+        EndTurn();
+    }
+
+    private void EndTurn()
+    {
+        isTurning = false;
+        turnTimer = 0f;
+    }
+
+    // --------------------------------------------------------- State gating
+
+    private bool IsInLockedState()
+    {
+        for (int i = 0; i < animator.layerCount; i++)
+        {
+            if (HasLockedTag(animator.GetCurrentAnimatorStateInfo(i)))
+                return true;
+
+            if (animator.IsInTransition(i) && HasLockedTag(animator.GetNextAnimatorStateInfo(i)))
+                return true;
+        }
+        return false;
+    }
+
+    private bool HasLockedTag(AnimatorStateInfo info)
+    {
+        for (int i = 0; i < lockedTags.Length; i++)
+        {
+            if (info.IsTag(lockedTags[i]))
+                return true;
+        }
+        return false;
     }
 }
