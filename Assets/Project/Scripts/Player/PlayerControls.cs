@@ -1,4 +1,5 @@
 using UnityEngine;
+using Unity.Cinemachine;
 using UnityEngine.InputSystem;
 
 /// <summary>
@@ -14,6 +15,7 @@ public class PlayerControls : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform cameraTransform;
+    [SerializeField] private CinemachineOrbitalFollow orbitalFollow;
 
     [Header("Rotation")]
     [SerializeField] private float freelookRotationSpeed = 10f;
@@ -77,19 +79,35 @@ public class PlayerControls : MonoBehaviour
 
         controls.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
         controls.Player.Move.canceled += ctx => moveInput = Vector2.zero;
-
-        controls.Player.Focus.performed += ctx =>
-        {
-            isFocused = !isFocused;
-            animator.SetBool(IsFocusedHash, isFocused);
-        };
     }
 
     private void OnEnable() => controls.Enable();
     private void OnDisable() => controls.Disable();
 
-    public void SetLockOnTarget(Transform target) => lockOnTarget = target;
-    public void ClearLockOnTarget() => lockOnTarget = null;
+    public void SetLockOnTarget(Transform target)
+    {
+        // Store the selected enemy.
+        lockOnTarget = target;
+
+        // Update whether the player is focused.
+        isFocused = target != null;
+
+        // Update the Animator's focus parameter.
+        animator.SetBool(IsFocusedHash, isFocused);
+
+        // Reset strafe movement when leaving focus.
+        if (!isFocused)
+        {
+            animator.SetFloat(MoveXHash, 0f);
+            animator.SetFloat(MoveZHash, 0f);
+        }
+    }
+
+    public void ClearLockOnTarget()
+    {
+        // Clear the target and exit focus mode.
+        SetLockOnTarget(null);
+    }
 
     // ---------------------------------------------------------------- Update
 
@@ -124,8 +142,16 @@ public class PlayerControls : MonoBehaviour
         if (isLocked || isTurning || inputMagnitude <= 0.1f)
             return;
 
-        Vector3 camForward = Vector3.Scale(cameraTransform.forward, new Vector3(1, 0, 1)).normalized;
-        Vector3 camRight = Vector3.Scale(cameraTransform.right, new Vector3(1, 0, 1)).normalized;
+        //Get the camera's horizontal orbit angle.
+        float cameraYaw = orbitalFollow.HorizontalAxis.Value;
+
+        //Convert the horizontal angle into a rotation.
+        Quaternion yawRotation = Quaternion.Euler(0f, cameraYaw, 0f);
+
+        //Calculate movement directions using the orbit angle.
+        Vector3 camForward = yawRotation * Vector3.forward;
+        Vector3 camRight = yawRotation * Vector3.right;
+
         Vector3 desiredDirection = (camForward * moveInput.y + camRight * moveInput.x).normalized;
 
         float facingDot = Vector3.Dot(transform.forward, desiredDirection);

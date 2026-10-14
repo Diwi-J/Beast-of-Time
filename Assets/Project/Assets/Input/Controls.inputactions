@@ -75,6 +75,16 @@
                     "interactions": "",
                     "initialStateCheck": false,
                     "priority": 0
+                },
+                {
+                    "name": "SwitchTarget",
+                    "type": "Value",
+                    "id": "da836106-6bf2-4b43-8b11-304a89349aab",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true,
+                    "priority": 0
                 }
             ],
             "bindings": [
@@ -273,6 +283,50 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "a14fc977-eacf-436b-b565-51b640bf896b",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchTarget",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "73ff8ee4-1679-462b-82e8-fcbd5fa4086a",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard & Mouse",
+                    "action": "SwitchTarget",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "02d975f9-ea5a-4397-94e8-e13c763d3a0a",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard & Mouse",
+                    "action": "SwitchTarget",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "f9eb53a7-bf20-483d-bd7d-e66c067ad9dc",
+                    "path": "<Gamepad>/rightStick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchTarget",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
