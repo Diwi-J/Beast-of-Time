@@ -47,6 +47,9 @@ public class PlayerControls : MonoBehaviour
     [Header("Gravity")]
     [SerializeField] private float gravity = -15f;
     [SerializeField] private float groundedGravity = -2f;
+    [SerializeField] private PlayerSwordSound swordSound;
+    [SerializeField] private float stepDistance = 2f; // metres moved between footstep sounds
+    private float distanceSinceStep;
 
     private Animator animator;
     private CharacterController controller;
@@ -212,9 +215,20 @@ public class PlayerControls : MonoBehaviour
             delta = Vector3.zero;
 
         delta *= rootMotionMultiplier;
+        // Horizontal speed this frame (ignore Y). Play the run sound only while actually moving.
+        float horizontalSpeed = new Vector3(delta.x, 0f, delta.z).magnitude / Time.deltaTime;
+        bool isMoving = controller.isGrounded && !isLocked && horizontalSpeed > 0.1f;
+
+        if (swordSound != null)
+        {
+            if (isMoving) swordSound.PlayRun();
+            else swordSound.StopRun();
+        }
         delta.y = verticalVelocity * Time.deltaTime; // Y is always scripted
 
         controller.Move(delta);
+            
+
     }
 
     // ----------------------------------------------------------------- Turn
@@ -222,9 +236,16 @@ public class PlayerControls : MonoBehaviour
     // Call this via an Animation Event at the end of the "180" clip.
     public void OnTurnComplete()
     {
-        EndTurn();
-    }
 
+        EndTurn();
+       
+            
+
+       
+    }
+    // Call this via an Animation Event on each footstep of the run clip.
+   
+ 
     private void EndTurn()
     {
         isTurning = false;

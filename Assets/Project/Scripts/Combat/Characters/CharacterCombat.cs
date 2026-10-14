@@ -197,6 +197,7 @@ public class CharacterCombat : MonoBehaviour
     void PowerUp(InputAction.CallbackContext ctx)
     {
         if (!CompareTag("Player")) return;
+        if (gauge == null || !gauge.StartTimeDilation()) return;
 
         animator.SetFloat(PowerUpParam, PoweredUpBoost);
 

@@ -2934,10 +2934,21 @@ MonoBehaviour:
   anchoredPosition: {x: 0, y: 20}
   backgroundColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
   fillColor: {r: 0, g: 0, b: 1, a: 1}
-  parryFillAmount: 0.34
-  drainRatePerSecond: 0.05
+  parryFillAmount: 0.401
+  drainRatePerSecond: 0.15
   fillSpeed: 3
   playerSwordSound: {fileID: 1992939179}
+--- !u!114 &353555208 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5860454506744294027, guid: f753439cd63baeb499d942c83567ca26, type: 3}
+  m_PrefabInstance: {fileID: 1645833949}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2879636c6d4fde545ad4709fce2d654e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
 --- !u!1 &354290494
 GameObject:
   m_ObjectHideFlags: 0
@@ -13113,6 +13124,7 @@ MonoBehaviour:
   redThreshold: 0.3
   criticalHitDamage: 0.1
   fillSpeed: 4
+  health: {fileID: 353555208}
 --- !u!1 &730301006
 GameObject:
   m_ObjectHideFlags: 0
@@ -13127,6 +13139,7 @@ GameObject:
   - component: {fileID: 730301010}
   - component: {fileID: 730301009}
   - component: {fileID: 730301008}
+  - component: {fileID: 730301013}
   m_Layer: 0
   m_Name: Plane (1)
   m_TagString: Untagged
@@ -13414,6 +13427,38 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
+--- !u!114 &730301013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 730301006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshSurface
+  m_SerializedVersion: 0
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: b881d35a0d4eb244d9e81ae4fc4dd071, type: 2}
+  m_BuildHeightMesh: 0
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -13463,6 +13508,67 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &835129016
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2826686282361447549, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
+      propertyPath: playerSwordSound
+      value: 
+      objectReference: {fileID: 1992939179}
+    - target: {fileID: 3792378212866652008, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.40557
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792378212866652008, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792378212866652008, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 20.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792378212866652008, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792378212866652008, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792378212866652008, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792378212866652008, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792378212866652008, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792378212866652008, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3792378212866652008, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4605752267124551122, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
+      propertyPath: m_Name
+      value: _Bossu (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
 --- !u!43 &896626606
 Mesh:
   m_ObjectHideFlags: 0
@@ -27627,7 +27733,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3792378212866652008, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.73787
+      value: -60.6
       objectReference: {fileID: 0}
     - target: {fileID: 3792378212866652008, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -27661,6 +27767,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: _Bossu
       objectReference: {fileID: 0}
+    - target: {fileID: 7666040763353089398, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
+      propertyPath: monsterSound
+      value: 
+      objectReference: {fileID: 1992939179}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -35610,6 +35720,22 @@ PrefabInstance:
       propertyPath: TimeDilationDistorion
       value: 
       objectReference: {fileID: 1632911026}
+    - target: {fileID: 6820330369001683608, guid: f753439cd63baeb499d942c83567ca26, type: 3}
+      propertyPath: swordSound
+      value: 
+      objectReference: {fileID: 1992939179}
+    - target: {fileID: 6820330369001683608, guid: f753439cd63baeb499d942c83567ca26, type: 3}
+      propertyPath: lockOnTarget
+      value: 
+      objectReference: {fileID: 1545634986}
+    - target: {fileID: 6820330369001683608, guid: f753439cd63baeb499d942c83567ca26, type: 3}
+      propertyPath: orbitalFollow
+      value: 
+      objectReference: {fileID: 8059650108981399741}
+    - target: {fileID: 6820330369001683608, guid: f753439cd63baeb499d942c83567ca26, type: 3}
+      propertyPath: cameraTransform
+      value: 
+      objectReference: {fileID: 1768873560}
     - target: {fileID: 7294460315931692114, guid: f753439cd63baeb499d942c83567ca26, type: 3}
       propertyPath: playerCamera
       value: 
@@ -35978,7 +36104,7 @@ Transform:
   m_GameObject: {fileID: 1768873555}
   serializedVersion: 2
   m_LocalRotation: {x: 0.010114232, y: 0.98946404, z: -0.08656689, w: 0.11560619}
-  m_LocalPosition: {x: 1.9724857, y: 1.9433187, z: 7.599057}
+  m_LocalPosition: {x: 1.970208, y: 1.8876784, z: 7.608672}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -40110,6 +40236,9 @@ MonoBehaviour:
   clashClip: {fileID: 8300000, guid: b81870e37cf1e9d43b6ad0e50feb26b4, type: 3}
   hitClip: {fileID: 8300000, guid: 0f8f2d16154c2894eae149cb8b4ef4b7, type: 3}
   chargeClip: {fileID: 8300000, guid: 16d18d8663bd84347ba8ea9e59ed58be, type: 3}
+  runningClip: {fileID: 8300000, guid: 16831c77e7ac4c24dae7900bcd852b68, type: 3}
+  monsterClip: {fileID: 8300000, guid: 385d84611651d404db9033db9c8a995b, type: 3}
+  monsterStompClip: {fileID: 8300000, guid: 0b0cb337c3f28c5428187b516ae5dcc7, type: 3}
   volume: 1
 --- !u!1 &2008953897
 GameObject:
@@ -42556,7 +42685,7 @@ Transform:
   m_GameObject: {fileID: 7397122726023392471}
   serializedVersion: 2
   m_LocalRotation: {x: 0.010114232, y: 0.98946404, z: -0.08656689, w: 0.11560619}
-  m_LocalPosition: {x: 1.9724857, y: 1.9433187, z: 7.599057}
+  m_LocalPosition: {x: 1.970208, y: 1.8876784, z: 7.608672}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -42667,6 +42796,7 @@ SceneRoots:
   - {fileID: 1478868450}
   - {fileID: 1645833949}
   - {fileID: 1425521609}
+  - {fileID: 835129016}
   - {fileID: 278697504}
   - {fileID: 948869750}
   - {fileID: 1563377906}

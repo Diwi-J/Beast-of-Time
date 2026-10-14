@@ -73,6 +73,9 @@ public class EnemyController : MonoBehaviour
     [Header("Death")]
     [SerializeField] private bool despawnAfterDeath = true;
     [SerializeField] private float despawnDelay = 5f;
+    [SerializeField] private PlayerSwordSound monsterSound; // plays the roar when the jump starts
+    [SerializeField] private float stompInterval = 0.5f; // seconds between stomps while running
+    private float stompTimer;
 
     private Animator animator;
     private NavMeshAgent agent;
@@ -186,6 +189,7 @@ public class EnemyController : MonoBehaviour
 
     private void UpdateIdle(float dt)
     {
+        if (monsterSound != null) monsterSound.StopStomp();
         SetLocomotion(0f, dt);
 
         if (!HasTarget) return;
@@ -236,6 +240,19 @@ public class EnemyController : MonoBehaviour
             targetSpeed = (dist > runDistance ? runSpeedParam : walkSpeedParam) * alignment;
         }
         SetLocomotion(targetSpeed, dt);
+        // Stomp only while running (far from the player and actually moving).
+        if (monsterSound != null)
+        {
+            bool running = dist > runDistance && targetSpeed > 0.1f;
+            Debug.Log($"[Stomp] dist={dist:F1} runDistance={runDistance} targetSpeed={targetSpeed:F2} running={running}");
+
+            if (running) monsterSound.PlayStomp();
+            else monsterSound.StopStomp();
+        }
+        else
+        {
+            Debug.LogWarning("[Stomp] monsterSound is NOT assigned on EnemyController");
+        }
 
         // Melee.
         if (dist <= meleeRange && attackCooldownTimer <= 0f && IsFacing(toPlayer))
@@ -298,6 +315,7 @@ public class EnemyController : MonoBehaviour
     #region Attacks
     private void StartAttack(AttackType type)
     {
+        if (monsterSound != null) monsterSound.StopStomp();
         currentAttack = type;
         state = State.Attack;
         attackTimer = 0f;
@@ -311,8 +329,12 @@ public class EnemyController : MonoBehaviour
         {
             case AttackType.Swipe: animator.SetTrigger(SwipeHash); break;
             case AttackType.Punch: animator.SetTrigger(PunchHash); break;
-            case AttackType.Jump: animator.SetTrigger(JumpHash); break;
+            case AttackType.Jump:
+                animator.SetTrigger(JumpHash);
+                if (monsterSound != null) monsterSound.PlayRoar();
+                break;
         }
+        
     }
 
     private void AbortAttack()
@@ -401,7 +423,7 @@ public class EnemyController : MonoBehaviour
     public void JumpTakeoff()
     {
         if (!useCodeLeap || state != State.Attack || currentAttack != AttackType.Jump) return;
-
+        if (monsterSound != null) monsterSound.PlayRoar();
         jumpLaunched = true;
         if (!HasTarget) return;
 
@@ -430,6 +452,7 @@ public class EnemyController : MonoBehaviour
     {
         if (state == State.Dead) return;
         state = State.Dead;
+        if (monsterSound != null) monsterSound.StopStomp();
 
         ResetAttackTriggers();
 
@@ -481,6 +504,8 @@ public class EnemyController : MonoBehaviour
             position.y = transform.position.y;
             transform.position = position;
         }
+        
+      
     }
 
     #region Helpers

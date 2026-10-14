@@ -49,6 +49,8 @@ public class PlayerHealth : MonoBehaviour
     public float CurrentHealth => currentValue;
     public bool IsDead => currentValue <= 0f;
 
+    [SerializeField] private Health health;
+
     private void Awake()
     {
         // Background bar — the empty frame, built and positioned entirely in code.
@@ -100,19 +102,8 @@ public class PlayerHealth : MonoBehaviour
     // Call this whenever the player gets hit by a critical hit.
     public void OnCriticalHit()
     {
-        // Ignore hits if the player is already dead.
-        if (IsDead) return;
-
-        currentValue = Mathf.Clamp01(currentValue - criticalHitDamage);
-        Debug.Log($"[PlayerHealth] Critical hit taken. Health = {currentValue}");
-
-        // Treat tiny leftover values as zero so floating point error can't leave us at 0.0000001.
-        if (currentValue <= Epsilon)
-        {
-            currentValue = 0f;
-            Debug.Log("[PlayerHealth] Health empty — firing OnPlayerDied");
-            OnPlayerDied?.Invoke();
-        }
+        if (health == null || health.IsDead) return;
+        health.TakeDamage(health.Max * criticalHitDamage); // 0.1 = 10% of max health
     }
 
     // Works out which color the bar should be for a given health value.
@@ -128,5 +119,29 @@ public class PlayerHealth : MonoBehaviour
     {
         currentValue = 1f;
         displayedValue = 1f;
+    }
+    private void OnEnable()
+    {
+        if (health == null) return;
+        health.OnHealthChanged += HandleHealthChanged;
+        health.OnDeath += HandleDeath;
+    }
+
+    private void OnDisable()
+    {
+        if (health == null) return;
+        health.OnHealthChanged -= HandleHealthChanged;
+        health.OnDeath -= HandleDeath;
+    }
+    // Health sends current and max. We convert them to the 0-1 value the bar uses.
+    private void HandleHealthChanged(float current, float max)
+    {
+        currentValue = max > 0f ? current / max : 0f;
+    }
+
+    // Re-fire your existing event so anything listening to OnPlayerDied still works.
+    private void HandleDeath()
+    {
+        OnPlayerDied?.Invoke();
     }
 }
