@@ -86,7 +86,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 494a5883f6853a24c8f7500bc9f35e6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitDetector
-  damage: 0
+  damage: 10
   chipDamagemultiplier: 0.1
 --- !u!82 &8467594557111497413
 AudioSource:

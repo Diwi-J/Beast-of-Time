@@ -1,8 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
-using UnityEditor;
-using Unity.Collections.Tests.CoreCLR.TestJobs;
+
 
 public class CharacterCombat : MonoBehaviour
 {
@@ -17,11 +16,18 @@ public class CharacterCombat : MonoBehaviour
     public float parryStartUpDelay = 0.08f;
     public float parryWindowDuration = 0.2f;
 
+    [Header("Damage")]
+    public float blockDamageMultiplier = 0.1f;
+
     [Header("Time Dilation")]
     public float PoweredUpBoost = 1.25f;
     public float SlowDownDebuff = 0.25f;
     private static readonly int PowerUpParam = Animator.StringToHash("PowerUp");
     private static readonly int SlowDownParam = Animator.StringToHash("SlowDown");
+
+    [Header("Death")]
+    [SerializeField] private string deathTrigger = "Killed";
+
 
     [Header("VFX")]
     [SerializeField] private ParticleSystem TimeDilationDistorion;
@@ -30,20 +36,21 @@ public class CharacterCombat : MonoBehaviour
     public static List<CharacterCombat> Enemies = new();
     public static CharacterCombat PlayerInstance { get; private set; }
 
+    public static event System.Action<CharacterCombat> CharacterDied;
+
+    public Health Health { get; private set; }
     public bool IsBlocking { get; private set; }
+    private bool isDead;
     private float BlockStartTime;
     public Gauge gauge;
-    public PlayerSwordSound playerSwordSound;
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        Health = GetComponent<Health>();
         controls = new Controls();
-        playerSwordSound = GetComponent<PlayerSwordSound>();
-        controls.Player.PowerUp.performed += PowerUp;
-        
 
-        if (gauge != null) gauge.OnGaugeEmpty += HandleGaugeEmpty; // stop when gauge runs dry
-        
+        controls.Player.PowerUp.performed += PowerUp;
+
         //distortion = GetComponentInChildren<ParticleSystem>();
 
         //if (distortion != null) Debug.Log("distorion not found");
@@ -80,17 +87,45 @@ public class CharacterCombat : MonoBehaviour
 
         EnableAllHurtboxes();
     }
+    #region Death
+    private void HandleDeath()
+    {
+        Debug.Log($"[CharacterCombat] {name} HandleDeath, firing '{deathTrigger}'");
+        
+        if (isDead) return;
+        isDead = true;
+        IsBlocking = false;
+
+        foreach (var cc in hitboxes.Values)
+            cc.GetComponent<Collider>().enabled = false;
+
+        DisableAllHurtboxes();
+
+        if (blockbox != null)
+            blockbox.GetComponent<Collider>().enabled = false;
+
+        Enemies.Remove(this);
+        controls.Disable();
+        animator.SetTrigger(deathTrigger);
+
+        CharacterDied?.Invoke(this);
+
+        
+    }
+    #endregion 
 
     #region HitBox Controls
     public void Enablehitbox(string id)
     {
+        if (isDead) return;
+
         Debug.Log($"[{gameObject.name}] Enablehitbox called with id: {id}");
 
         if (hitboxes.TryGetValue(id, out var cc))
         {
             cc.GetComponent<Collider>().enabled = true;
 
-            // Debug.Log($"[CharacterCombat] Hitbox '{id}' collider enabled = {cc.GetComponent<Collider>().enabled}");
+           // Debug.Log($"[CharacterCombat] Hitbox '{id}' collider enabled = {cc.GetComponent<Collider>().enabled}");
         }
         else
         {
@@ -112,7 +147,9 @@ public class CharacterCombat : MonoBehaviour
     #region Hurtbox Controls
     public void EnableAllHurtboxes()
     {
-        foreach (var cc in hurtboxes.Values)
+        if (isDead) return;
+
+        foreach(var cc in hurtboxes.Values)
         {
             cc.GetComponent<Collider>().enabled = true;
         }
@@ -130,6 +167,8 @@ public class CharacterCombat : MonoBehaviour
     #region Blockbox Controls
     public void EnableBlockbox()
     {
+        if (isDead) return;
+
         Debug.Log($"[{gameObject.name}] Blockbox Enabled");
 
         IsBlocking = true;
@@ -152,35 +191,18 @@ public class CharacterCombat : MonoBehaviour
     {
         float elapsed = Time.time - BlockStartTime;
         return elapsed >= parryStartUpDelay && elapsed <= (parryStartUpDelay + parryWindowDuration);
-        if (playerSwordSound != null)
-        {
-            playerSwordSound.PlayClash();
-        }
     }
 
     #region Time Dilation
     void PowerUp(InputAction.CallbackContext ctx)
     {
-        Debug.Log("[CharacterCombat] PowerUp INPUT FIRED");
         if (!CompareTag("Player")) return;
-        if (gauge == null)
-        {
-            Debug.Log("[CharacterCombat] gauge is NULL");
-            return;
-        }
-
-        bool started = gauge.StartTimeDilation();
-        Debug.Log($"[CharacterCombat] StartTimeDilation returned: {started}");
-        if (!started) return;
 
         animator.SetFloat(PowerUpParam, PoweredUpBoost);
-        TimeDilationDistorion.Play();
-        ApplySlowDown();
-        if (playerSwordSound != null)
-        {
-            playerSwordSound.PlayCharge();
-        }
 
+        TimeDilationDistorion.Play();
+
+        ApplySlowDown();
     }
 
     void PowerDown()
@@ -193,12 +215,6 @@ public class CharacterCombat : MonoBehaviour
         RemoveSlowDown();
 
     }
-    
-
-    void HandleGaugeEmpty()
-    {
-        PowerDown();
-    }
 
     void ApplySlowDown()
     {
@@ -206,11 +222,7 @@ public class CharacterCombat : MonoBehaviour
         {
             Animator EnemyAnim = enemy.GetComponent<Animator>();
             EnemyAnim.SetFloat(SlowDownParam, SlowDownDebuff);
-            Debug.Log($"{enemy.name} has been Slowed Down");
-        }
-        if (playerSwordSound != null)
-        {
-            playerSwordSound.PlayCharge();
+            Debug.Log($"{enemy.name } has been Slowed Down");
         }
     }
 
@@ -218,8 +230,7 @@ public class CharacterCombat : MonoBehaviour
     {
         foreach (var enemy in Enemies)
         {
-            Animator EnemyAnim = enemy.GetComponent<Animator>();
-            EnemyAnim.SetFloat(SlowDownParam, 1); // reset enemy's own SlowDown value, on their own Animator
+            animator.SetFloat(PowerUpParam, 1);
         }
     }
     #endregion 
@@ -228,16 +239,18 @@ public class CharacterCombat : MonoBehaviour
     {
         controls.Enable();
 
+        if (Health != null)
+            Health.OnDeath += HandleDeath;
+
     }
 
     private void OnDisable()
     {
         controls.Disable();
-    }
-    private void OnDestroy()
-    {
-        Enemies.Remove(this);
-        if (gauge != null) gauge.OnGaugeEmpty -= HandleGaugeEmpty;
+
+        if (Health != null)
+            Health.OnDeath -= HandleDeath;
     }
 
+    private void OnDestroy() => Enemies.Remove(this);
 }
