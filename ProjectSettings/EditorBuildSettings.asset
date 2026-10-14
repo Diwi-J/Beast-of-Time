@@ -6,7 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Project/Scenes/Main Menu.unity
+    guid: 420b868c1e44b674ca9426b7221ed561
+  - enabled: 1
     path: Assets/Project/Scenes/Divan.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    guid: 8d9569cf26a35d74ba5137fcf4985b1e
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
