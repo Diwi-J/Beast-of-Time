@@ -467,15 +467,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.934
+      value: 3.40557
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000006860211
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.67
+      value: 0.73787
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -740,6 +740,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2826686282361447549}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8579244021502842301}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7666040763353089398}
   m_SourcePrefab: {fileID: 100100000, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
 --- !u!4 &1202437395109228160 stripped
 Transform:
@@ -848,10 +854,76 @@ MonoBehaviour:
   blockDamageMultiplier: 0.1
   PoweredUpBoost: 1.25
   SlowDownDebuff: 0.25
-  deathTrigger: killed
+  deathTrigger: Killed
   TimeDilationDistorion: {fileID: 0}
   ParryDistortion: {fileID: 0}
   gauge: {fileID: 0}
+--- !u!195 &8579244021502842301
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4605752267124551122}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &7666040763353089398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4605752267124551122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fff4c928ab7427440abe91c1e4c13dff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyController
+  aggroRange: 30
+  walkSpeedParam: 0.5
+  runSpeedParam: 1
+  runDistance: 6
+  stopDistance: 2.5
+  rotationSpeed: 8
+  speedDamping: 0.1
+  repathInterval: 0.2
+  meleeRange: 3
+  attackAngle: 35
+  attackCooldown: 0
+  attackTrackTime: 0.3
+  attackTag: Attack
+  attackEnterTimeout: 0.5
+  attackTimeout: 10
+  jumpMinDistance: 6
+  jumpMaxDistance: 14
+  jumpTriggerDelay: 0.5
+  jumpCooldown: 2
+  jumpTrackTime: 0.4
+  jumpMotionMultiplier: 1
+  jumpDamage: 25
+  aoeRadius: 2.5
+  aoeHeightOffset: 1
+  aoeLifetime: 0.2
+  jumpImpactVfx: {fileID: 0}
+  useCodeLeap: 1
+  jumpAirTime: 1
+  jumpStandoff: 2
+  rootMotionMultiplier: 1
+  despawnAfterDeath: 1
+  despawnDelay: 5
 --- !u!4 &4788726042073571523 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8169382868667117632, guid: 88eedf690e30e294aaaeb495a148d52d, type: 3}
