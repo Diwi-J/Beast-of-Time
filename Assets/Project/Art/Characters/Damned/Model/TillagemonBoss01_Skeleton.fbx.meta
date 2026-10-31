@@ -3,7 +3,17 @@ guid: f25c1ffcf8f2ff14fb05ddbc6d2412cc
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TillagemonBoss01_01_M_Inst
+    second: {fileID: 2100000, guid: 95a2e6d0e884c5b478674be3bf330c3f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TillagemonBoss01_02_M_Inst
+    second: {fileID: 2100000, guid: 60950b1840451844696a25e17c961ed9, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -97,7 +107,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.0254
+    globalScale: 1
     rootMotionBoneName: B_Root
     hasTranslationDoF: 0
     hasExtraRoot: 0
