@@ -81,10 +81,20 @@ public class HitDetector : MonoBehaviour
         ApplyDamage(defender, damage);
     }
 
-    private static void ApplyDamage(CharacterCombat defender, float amount)
+    private void ApplyDamage(CharacterCombat defender, float amount)
     {
-        if (defender.Health != null)
-            defender.Health.TakeDamage(amount);
+        if (defender.Health == null) return;
+
+        // Only the player's hits change the visible bar (enemy hits on the player are skipped)
+        if (self.Owner != null && self.Owner.CompareTag("Player"))
+        {
+            var targeting = self.Owner.GetComponent<PlayerTargeting>();
+            var bar = defender.GetComponent<EnemyHealthBar>();
+            if (targeting != null && bar != null) targeting.SetTarget(bar);
+        }
+
+        // Target is set before damage so a killing hit hides the bar right after showing it
+        defender.Health.TakeDamage(amount);
     }
 }
 

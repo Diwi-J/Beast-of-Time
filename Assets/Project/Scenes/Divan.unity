@@ -3483,7 +3483,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5860454506744294027, guid: f753439cd63baeb499d942c83567ca26, type: 3}
   m_PrefabInstance: {fileID: 1645833949}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 818104819}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2879636c6d4fde545ad4709fce2d654e, type: 3}
@@ -14211,6 +14211,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 788918502}
   m_CullTransparentMesh: 1
+--- !u!1 &818104819 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2727789734065532453, guid: f753439cd63baeb499d942c83567ca26, type: 3}
+  m_PrefabInstance: {fileID: 1645833949}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &818104820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 818104819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fdcb0a9c7b21a7409fcb0ee6782778d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerTargeting
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -14323,7 +14340,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4605752267124551122, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2027191060}
   m_SourcePrefab: {fileID: 100100000, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
 --- !u!43 &896626606
 Mesh:
@@ -28771,7 +28791,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4605752267124551122, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1968083994}
   m_SourcePrefab: {fileID: 100100000, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
 --- !u!1 &1478868449
 GameObject:
@@ -36756,7 +36779,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2727789734065532453, guid: f753439cd63baeb499d942c83567ca26, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 818104820}
   m_SourcePrefab: {fileID: 100100000, guid: f753439cd63baeb499d942c83567ca26, type: 3}
 --- !u!1 &1658906344
 GameObject:
@@ -41362,6 +41388,39 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1945692180}
   m_CullTransparentMesh: 1
+--- !u!1 &1968083992 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4605752267124551122, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
+  m_PrefabInstance: {fileID: 1425521609}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1968083994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1968083992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 365dc1643f0bbe547b3e8ca9ffb3f02c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthBar
+  health: {fileID: 1968083995}
+  offset: {x: 0, y: 2, z: 0}
+  size: {x: 1.5, y: 0.2}
+  backColor: {r: 0.1, g: 0.1, b: 0.1, a: 0.8}
+  fillColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &1968083995 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4406039413057315425, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
+  m_PrefabInstance: {fileID: 1425521609}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1968083992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2879636c6d4fde545ad4709fce2d654e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
 --- !u!43 &1982321417
 Mesh:
   m_ObjectHideFlags: 0
@@ -43592,6 +43651,39 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
+--- !u!1 &2027191059 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4605752267124551122, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
+  m_PrefabInstance: {fileID: 835129016}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2027191060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027191059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 365dc1643f0bbe547b3e8ca9ffb3f02c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthBar
+  health: {fileID: 2027191064}
+  offset: {x: 0, y: 2, z: 0}
+  size: {x: 1.5, y: 0.2}
+  backColor: {r: 0.1, g: 0.1, b: 0.1, a: 0.8}
+  fillColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &2027191064 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4406039413057315425, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
+  m_PrefabInstance: {fileID: 835129016}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027191059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2879636c6d4fde545ad4709fce2d654e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
 --- !u!1 &2036807404
 GameObject:
   m_ObjectHideFlags: 0
