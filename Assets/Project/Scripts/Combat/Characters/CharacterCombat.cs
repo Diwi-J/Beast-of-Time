@@ -212,7 +212,7 @@ public class CharacterCombat : MonoBehaviour
         {
             animator.SetFloat(PowerUpParam, 1);
         }
-
+        if (TimeDilationDistorion != null) TimeDilationDistorion.Stop();
         RemoveSlowDown();
 
     }
@@ -230,9 +230,7 @@ public class CharacterCombat : MonoBehaviour
     void RemoveSlowDown()
     {
         foreach (var enemy in Enemies)
-        {
-            animator.SetFloat(PowerUpParam, 1);
-        }
+            enemy.GetComponent<Animator>().SetFloat(SlowDownParam, 1f);
     }
     #endregion 
 
@@ -242,6 +240,8 @@ public class CharacterCombat : MonoBehaviour
 
         if (Health != null)
             Health.OnDeath += HandleDeath;
+        if (gauge != null) gauge.OnGaugeEmpty += PowerDown;
+
 
     }
 
@@ -251,6 +251,7 @@ public class CharacterCombat : MonoBehaviour
 
         if (Health != null)
             Health.OnDeath -= HandleDeath;
+        if (gauge != null) gauge.OnGaugeEmpty -= PowerDown;
     }
 
     private void OnDestroy() => Enemies.Remove(this);

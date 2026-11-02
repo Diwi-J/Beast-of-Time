@@ -13564,6 +13564,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: _Bossu (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7666040763353089398, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
+      propertyPath: monsterSound
+      value: 
+      objectReference: {fileID: 1992939179}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
