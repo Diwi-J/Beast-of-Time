@@ -13733,15 +13733,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
   targetCanvas: {fileID: 236502118}
-  barSize: {x: 500, y: 50}
-  anchoredPosition: {x: 20, y: -20}
+  barSize: {x: 500, y: 60}
+  anchoredPosition: {x: 20, y: 30}
   backgroundColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   healthyColor: {r: 0, g: 1, b: 0, a: 1}
   cautionColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   dangerColor: {r: 1, g: 0, b: 0, a: 1}
   yellowThreshold: 0.6
-  redThreshold: 0.3
+  redThreshold: 0.385
   criticalHitDamage: 0.1
+  labelText: Player Health
+  labelFontSize: 40
+  labelColor: {r: 0.10188681, g: 0.092851564, b: 0.092851564, a: 1}
   fillSpeed: 4
   health: {fileID: 353555208}
 --- !u!1 &730301006

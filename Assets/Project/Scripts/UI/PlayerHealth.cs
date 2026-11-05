@@ -1,14 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using TMPro;
 
 public class PlayerHealth : MonoBehaviour
 {
     [Header("Bar Setup")]
     [SerializeField] private Canvas targetCanvas; // drag your scene's Canvas in here
-    [SerializeField] private Vector2 barSize = new Vector2(300f, 40f);
-    // Top-left corner of the screen, offset inward a little so it isn't touching the edge.
-    [SerializeField] private Vector2 anchoredPosition = new Vector2(20f, -20f);
+    [SerializeField] private Vector2 barSize = new Vector2(300f, 50f);
+    // CHANGED: bottom-left corner, offset inward a little so it isn't touching the edge.
+    // Y is positive because "up" from the bottom edge is +Y.
+    [SerializeField] private Vector2 anchoredPosition = new Vector2(20f, 40f);
     [SerializeField] private Color backgroundColor = Color.gray;
 
     [Header("Health Colors")]
@@ -25,6 +27,11 @@ public class PlayerHealth : MonoBehaviour
     [Header("Damage")]
     // How much of the bar one critical hit removes (0.1 = 10%).
     [SerializeField, Range(0.01f, 1f)] private float criticalHitDamage = 0.1f;
+    
+    [Header("Label")]
+    [SerializeField] private string labelText = "Player Health";
+    [SerializeField] private float labelFontSize = 50f;
+    [SerializeField] private Color labelColor = Color.black;
 
     // How fast the bar visually catches up when the value changes.
     [SerializeField] private float fillSpeed = 4f;
@@ -53,20 +60,22 @@ public class PlayerHealth : MonoBehaviour
 
     private void Awake()
     {
-        // Background bar — the empty frame, built and positioned entirely in code.
+        // Background bar: the empty frame, built and positioned entirely in code.
         GameObject bg = new GameObject("HealthBackground", typeof(Image));
         bg.transform.SetParent(targetCanvas.transform, false);
 
         RectTransform bgRect = bg.GetComponent<RectTransform>();
         bgRect.sizeDelta = barSize;
-        bgRect.anchorMin = new Vector2(0f, 1f); // top-left of the canvas
-        bgRect.anchorMax = new Vector2(0f, 1f);
-        bgRect.pivot = new Vector2(0f, 1f);      // pivot top-left of the bar, so it sits flush with that anchor
+        // CHANGED: anchor and pivot both at the bottom-left, so the bar's own
+        // bottom-left corner sits exactly on the canvas's bottom-left corner.
+        bgRect.anchorMin = new Vector2(0f, 0f);
+        bgRect.anchorMax = new Vector2(0f, 0f);
+        bgRect.pivot = new Vector2(0f, 0f);
         bgRect.anchoredPosition = anchoredPosition;
 
         bg.GetComponent<Image>().color = backgroundColor;
 
-        // Fill bar — child of the background, so it inherits its position automatically.
+        // Fill bar: child of the background, so it inherits its position automatically.
         GameObject fill = new GameObject("HealthFill", typeof(Image));
         fill.transform.SetParent(bg.transform, false);
 
@@ -81,6 +90,27 @@ public class PlayerHealth : MonoBehaviour
 
         fillImage = fill.GetComponent<Image>();
         fillImage.color = healthyColor;
+        // Label: child of the background so it follows the bar wherever it's moved.
+        GameObject labelObj = new GameObject("HealthLabel", typeof(TextMeshProUGUI));
+        labelObj.transform.SetParent(bg.transform, false);
+
+        RectTransform labelRect = labelObj.GetComponent<RectTransform>();
+        // Anchors stretch across the top edge of the bar, so the text box
+        // is always exactly as wide as the bar.
+        labelRect.anchorMin = new Vector2(0f, 1f);
+        labelRect.anchorMax = new Vector2(1f, 1f);
+        // Pivot at the label's own bottom-left, so it sits ON TOP of the bar
+        // instead of overlapping it.
+        labelRect.pivot = new Vector2(0f, 0f);
+        labelRect.sizeDelta = new Vector2(0f, 30f);   // width 0 = just use the stretch; height 30
+        labelRect.anchoredPosition = new Vector2(0f, 4f); // small gap above the bar
+
+        TextMeshProUGUI label = labelObj.GetComponent<TextMeshProUGUI>();
+        label.text = labelText;
+        label.fontSize = labelFontSize;
+        label.color = labelColor;
+        label.alignment = TextAlignmentOptions.BottomLeft;
+        label.raycastTarget = false; // so the text never blocks mouse clicks
     }
 
     private void Update()
@@ -109,7 +139,7 @@ public class PlayerHealth : MonoBehaviour
     // Works out which color the bar should be for a given health value.
     private Color GetColorForHealth(float value)
     {
-        if (value <= redThreshold + Epsilon) return dangerColor;   // 30% or below
+        if (value <= redThreshold + Epsilon) return dangerColor;     // 30% or below
         if (value <= yellowThreshold + Epsilon) return cautionColor; // 60% or below
         return healthyColor;                                         // above 60%
     }
@@ -120,6 +150,7 @@ public class PlayerHealth : MonoBehaviour
         currentValue = 1f;
         displayedValue = 1f;
     }
+
     private void OnEnable()
     {
         if (health == null) return;
@@ -133,6 +164,7 @@ public class PlayerHealth : MonoBehaviour
         health.OnHealthChanged -= HandleHealthChanged;
         health.OnDeath -= HandleDeath;
     }
+
     // Health sends current and max. We convert them to the 0-1 value the bar uses.
     private void HandleHealthChanged(float current, float max)
     {
