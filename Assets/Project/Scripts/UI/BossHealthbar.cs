@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using TMPro;
 using System;
 
@@ -26,8 +27,9 @@ public class BossHealthBar : MonoBehaviour
 
     [Header("Behaviour")]
     [SerializeField] private float fillSpeed = 4f;  // how fast the bar catches up visually
-    // CHANGED: the key that shows/hides the bar when focusing on the boss.
-    [SerializeField] private KeyCode focusKey = KeyCode.F;
+    // Renamed from focusKey so Unity drops the old serialized KeyCode number
+    // (102 = KeyCode.F, but 102 in the Key enum is F9).
+    [SerializeField] private Key focusInputKey = Key.F;
 
     // Real value (1 = full, 0 = dead) vs the smoothed value shown on screen.
     private float currentValue = 1f;
@@ -39,6 +41,12 @@ public class BossHealthBar : MonoBehaviour
 
     // Other scripts (e.g. a victory screen) can listen to this.
     public event Action OnBossDied;
+
+    // CHANGED: true only while the boss object is active in the scene.
+    // This script sits on a DIFFERENT object from the boss, so the boss being
+    // inactive doesn't stop this script from running. We have to check it ourselves.
+    private bool BossIsActive =>
+        bossHealth != null && bossHealth.gameObject.activeInHierarchy;
 
     private void Awake()
     {
@@ -95,7 +103,7 @@ public class BossHealthBar : MonoBehaviour
         label.alignment = TextAlignmentOptions.BottomRight; // hugs the screen corner
         label.raycastTarget = false;
 
-        // CHANGED: start hidden. The bar only appears once the player focuses on the boss.
+        // Start hidden. The bar only appears once the player focuses on the boss.
         barRoot.SetActive(false);
     }
 
@@ -115,10 +123,17 @@ public class BossHealthBar : MonoBehaviour
 
     private void Update()
     {
-        // CHANGED: press F to show the bar, press F again to hide it.
-        // This script sits on a different object from barRoot, so Update keeps
-        // running even while the bar itself is switched off.
-        if (Input.GetKeyDown(focusKey))
+        // CHANGED: if the boss is inactive (not spawned yet, or deactivated),
+        // force the bar off and ignore F entirely.
+        if (!BossIsActive)
+        {
+            if (barRoot.activeSelf) barRoot.SetActive(false);
+            return; // skip the rest, there's nothing to display
+        }
+
+        // Boss is active, so F can toggle the bar.
+        // Keyboard.current can be null (e.g. no keyboard connected), so check first.
+        if (Keyboard.current != null && Keyboard.current[focusInputKey].wasPressedThisFrame)
         {
             barRoot.SetActive(!barRoot.activeSelf);
         }
@@ -143,6 +158,6 @@ public class BossHealthBar : MonoBehaviour
     }
 
     // Other scripts (e.g. a lock-on system) can call these instead of using F.
-    public void Show() { barRoot.SetActive(true); }
+    public void Show() { if (BossIsActive) barRoot.SetActive(true); }
     public void Hide() { barRoot.SetActive(false); }
 }
