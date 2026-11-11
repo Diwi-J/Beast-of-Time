@@ -95,13 +95,13 @@ ModelImporter:
     serializedVersion: 3
     human: []
     skeleton:
-    - name: skt_shield_mutatedknight_oc00(Clone)
+    - name: MOB_Knight_Double_Shield(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: root
-      parentName: skt_shield_mutatedknight_oc00(Clone)
+      parentName: MOB_Knight_Double_Shield(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
       scale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
@@ -311,7 +311,7 @@ ModelImporter:
       rotation: {x: 0.0025138855, y: 0.0025163293, z: -0.70710254, w: 0.70710206}
       scale: {x: 0.9999999, y: 1.0000001, z: 0.9999998}
     - name: sk_shield_mutatedknight_oc01
-      parentName: skt_shield_mutatedknight_oc00(Clone)
+      parentName: MOB_Knight_Double_Shield(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}

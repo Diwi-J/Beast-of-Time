@@ -95,13 +95,13 @@ ModelImporter:
     serializedVersion: 3
     human: []
     skeleton:
-    - name: skt_sword_demonknight_oc00(Clone)
+    - name: MOB_Knight_Sword(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Root
-      parentName: skt_sword_demonknight_oc00(Clone)
+      parentName: MOB_Knight_Sword(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
       scale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
@@ -296,7 +296,7 @@ ModelImporter:
       rotation: {x: -0.057707332, y: 0.9908447, z: -0.11943689, w: -0.025127167}
       scale: {x: 1.0000007, y: 0.99999994, z: 1.000001}
     - name: sk_sword_demonknight_oc01
-      parentName: skt_sword_demonknight_oc00(Clone)
+      parentName: MOB_Knight_Sword(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}
