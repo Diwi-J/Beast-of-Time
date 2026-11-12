@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,6 +8,10 @@ public class VictoryManager : MonoBehaviour
     [SerializeField] private Health bossHealth;           // the boss's Health component
     [SerializeField] private GameObject victoryPanel;     // "You Win" panel
     [SerializeField] private BossHealthBar bossHealthBar; // so we can hide it on win
+    [SerializeField] private GameObject pauseCanvas;      // drag your pause canvas in here
+
+    // How long to wait after the boss dies before showing the panel.
+    [SerializeField] private float panelDelay = 5f;
 
     private bool hasWon = false;
 
@@ -40,6 +45,17 @@ public class VictoryManager : MonoBehaviour
             // back on, since BossHealthBar.Update checks for F every frame.
             bossHealthBar.enabled = false;
         }
+
+        // The panel part runs in a coroutine so we can wait first.
+        StartCoroutine(ShowVictory());
+    }
+
+    private IEnumerator ShowVictory()
+    {
+        // Realtime wait, because we freeze Time.timeScale right after this.
+        yield return new WaitForSecondsRealtime(panelDelay);
+
+        if (pauseCanvas != null) pauseCanvas.SetActive(false);
 
         if (victoryPanel != null) victoryPanel.SetActive(true);
 

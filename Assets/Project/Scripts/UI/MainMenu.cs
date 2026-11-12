@@ -9,11 +9,11 @@ public class MainMenu : MonoBehaviour
     }
     public void OnPlayPressed()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
     public void OnControlsPressed()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(1);
     }
     public void OnApplicationQuit()
     {

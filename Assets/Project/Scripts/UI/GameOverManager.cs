@@ -6,9 +6,10 @@ public class GameOverManager : MonoBehaviour
 {
     [SerializeField] private PlayerHealth playerHealth;   // drag the player's PlayerHealth in here
     [SerializeField] private GameObject gameOverPanel;    // drag your Game Over panel in here
+    [SerializeField] private GameObject pauseCanvas;      // drag your pause canvas in here
 
-    // Short pause before the panel shows, so the death animation can play first.
-    [SerializeField] private float panelDelay = 1.5f;
+    // Pause before the panel shows, so the death animation can play first.
+    [SerializeField] private float panelDelay = 5f;
 
     private bool gameOverShown = false;
 
@@ -48,8 +49,16 @@ public class GameOverManager : MonoBehaviour
         // A normal WaitForSeconds would never finish once time is 0.
         yield return new WaitForSecondsRealtime(panelDelay);
 
+        // Hide the pause menu so it can't draw on top of the game over panel.
+        if (pauseCanvas != null)
+            pauseCanvas.SetActive(false);
+
         gameOverPanel.SetActive(true);
         Time.timeScale = 0f; // freeze the game behind the panel
+
+        // Free the cursor so the buttons can be clicked.
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     // Hook these up to the buttons' On Click () events in the Inspector.
