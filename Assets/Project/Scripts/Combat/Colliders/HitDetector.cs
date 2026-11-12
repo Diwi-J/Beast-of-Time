@@ -1,90 +1,64 @@
-using System;
 using UnityEngine;
 
+/// <summary>
+/// Detects only physics contacts. Damage / parry / block rules live in the
+/// attacker's CombatResolver; per-attack deduplication lives in
+/// CombatAttackRuntime. Never disables its own collider on contact.
+/// </summary>
 [RequireComponent(typeof(CombatCollider))]
 public class HitDetector : MonoBehaviour
 {
+    [Tooltip("Used by older clips until a CombatAttackSet is wired via BeginAttack.")]
     public float damage = 10f;
-    public float chipDamagemultiplier = 0.1f;
+
+    // Retain the old serialized field for prefab compatibility, but the source
+    // of truth for chip damage is defender.CharacterCombat.blockDamageMultiplier.
+    [HideInInspector] public float chipDamagemultiplier = 0.1f;
 
     private CombatCollider self;
     private PlayerSwordSound swordSound;
-    private static readonly int ImpactHash = Animator.StringToHash("Impact");
+    private CombatResolver resolver;
+    private CharacterCombat cachedOwner;
+    private bool reportedMissingResolver;
 
     private void Awake()
     {
         self = GetComponent<CombatCollider>();
+        // Preserve the existing hit sound without designing the audio system now.
         swordSound = GetComponent<PlayerSwordSound>();
+        if (swordSound == null)
+            swordSound = GetComponentInParent<PlayerSwordSound>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        var targetCC = other.GetComponent<CombatCollider>();
+        if (self == null || self.type != ColliderType.Hitbox)
+            return;
 
-        if (targetCC == null) return;
-        if (targetCC.Owner == self.Owner) return;
+        CombatCollider target = other.GetComponent<CombatCollider>();
+        if (target == null || self.Owner == null) return;
 
-        var defender = targetCC.Owner;
-        if (defender == null) return;
-
-        if (self.Owner != null && defender.CompareTag(self.Owner.tag)) return;
-
-        if (targetCC.type == ColliderType.Blockbox)
+        if (cachedOwner != self.Owner || resolver == null)
         {
-            ResolveBlockHit(defender);
-            GetComponent<Collider>().enabled = false;
+            cachedOwner = self.Owner;
+            resolver = cachedOwner.GetComponent<CombatResolver>();
         }
-        else if (targetCC.type == ColliderType.Hurtbox)
+
+        if (resolver == null)
         {
-            ResolveCleanHit(defender);
-            GetComponent<Collider>().enabled = false;
-        }
-    }
-
-    private void ResolveBlockHit(CharacterCombat defender)
-    {
-        if (defender.IsInParryWindow())
-        {
-            Debug.Log($"{defender.name} Parried");
-
-            if (defender.ParryDistortion != null)
-                defender.ParryDistortion.Play();
-
-            var defenderSound = defender.GetComponent<PlayerSwordSound>();
-            if (defenderSound != null)
-                defenderSound.PlayClash();
-
-            if (defender.gauge != null)
-                defender.gauge.OnParrySuccess();
-
-            // Parry deals zero damage and does not stagger the attacker.
+            if (!reportedMissingResolver)
+            {
+                reportedMissingResolver = true;
+                Debug.LogError($"[HitDetector] Add CombatResolver to attack owner '{self.Owner.name}'.", self.Owner);
+            }
             return;
         }
 
-        float chip = damage * defender.blockDamageMultiplier;
-        Debug.Log($"{defender.name} Blocked and took {chip} chip damage");
+        if (!resolver.TryResolve(self, target, damage, out CombatHitResult result))
+            return;
 
-        ApplyDamage(defender, chip);
-
-        // Skip the impact reaction if the chip damage killed the defender.
-        if (defender.Health == null || !defender.Health.IsDead)
-            defender.GetComponent<Animator>().SetTrigger(ImpactHash);
-    }
-
-    private void ResolveCleanHit(CharacterCombat defender)
-    {
-        Debug.Log($"{defender.name} took {damage} damage.");
-
-        if (swordSound != null)
+        // Temporary legacy sound bridge until the dedicated audio/VFX phase.
+        if (result.Outcome == CombatHitOutcome.Damaged && swordSound != null)
             swordSound.PlayHit();
-
-        ApplyDamage(defender, damage);
-    }
-
-    private static void ApplyDamage(CharacterCombat defender, float amount)
-    {
-        if (defender.Health != null)
-            defender.Health.TakeDamage(amount);
     }
 }
-

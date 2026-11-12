@@ -1,66 +1,84 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
+
+/// <summary>
+/// Owns the current Overdrive charge and its existing temporary UI bar.
+/// OverdriveController owns application/removal of the speed effects.
+/// HitDetector can continue calling OnParrySuccess() without changes.
+/// </summary>
 public class Gauge : MonoBehaviour
 {
-    [Header("Bar Setup")]
-    [SerializeField] private Canvas targetCanvas; // drag your scene's Canvas in here
+    [Header("Existing UI setup - preserved")]
+    [SerializeField] private Canvas targetCanvas;
     [SerializeField] private Vector2 barSize = new Vector2(300f, 80f);
-    [SerializeField] private Vector2 anchoredPosition = new Vector2(0f, 20f); // offset up from bottom edge
+    [SerializeField] private Vector2 anchoredPosition = new Vector2(0f, 20f);
     [SerializeField] private Color backgroundColor = Color.gray;
     [SerializeField] private Color fillColor = Color.blue;
 
-    // How much a successful parry fills the gauge (0 to 1).
+    [Header("Legacy fallback tuning (used only until configured)")]
     [SerializeField, Range(0.01f, 1f)] private float parryFillAmount = 0.34f;
-
-    // How much the gauge drains per second while time dilation is active.
     [SerializeField] private float drainRatePerSecond = 0.02f;
-
-    // How fast the bar visually catches up when the value changes.
+    [Header("UI smoothing")]
     [SerializeField] private float fillSpeed = 2f;
 
-    // The real gauge value, and the smoothed value shown on screen.
-    private float currentValue = 0f;
-    private float displayedValue = 0f;
+    [Header("Existing SFX reference")]
+    public PlayerSwordSound playerSwordSound;
 
-    // Whether time dilation is currently active and draining the gauge.
-    private bool isDraining = false;
+    public event Action OnGaugeEmpty;
 
-    // Built at runtime, so nothing needs to exist in the scene beforehand.
+    private OverdriveConfig configuration;
+    private float currentValue;
+    private float displayedValue;
+    private bool isDraining;
     private RectTransform fillRect;
     private float maxFillWidth;
 
-    // Fired when the gauge drains to empty on its own (not on manual stop).
-    public event Action OnGaugeEmpty;
-    public PlayerSwordSound playerSwordSound;
+    public float CurrentCharge => currentValue;
+    public float MaximumCharge => configuration != null ? configuration.MaximumCharge : 1f;
+    public float Normalized => Mathf.Clamp01(currentValue / MaximumCharge);
+    public bool IsDraining => isDraining;
+
+    private float ChargePerParry => configuration != null ? configuration.ChargePerParry : parryFillAmount;
+    private float DrainPerRealSecond => configuration != null ? configuration.DrainPerRealSecond : Mathf.Max(0.0001f, drainRatePerSecond);
+
+    public void Configure(OverdriveConfig source)
+    {
+        configuration = source;
+        currentValue = Mathf.Clamp(currentValue, 0f, MaximumCharge);
+        displayedValue = Mathf.Clamp(displayedValue, 0f, MaximumCharge);
+        UpdateFillImmediately();
+    }
+
     private void Awake()
     {
-        // Background bar — the empty frame, built and positioned entirely in code.
-        GameObject bg = new GameObject("GaugeBackground", typeof(Image));
-        bg.transform.SetParent(targetCanvas.transform, false);
+        // Preserve the existing runtime-created bar. The UI owner can replace
+        // this view later without taking over gauge gameplay state.
+        if (targetCanvas == null)
+        {
+            Debug.LogWarning("[Gauge] Target Canvas is unassigned; gauge still functions but has no built-in bar.", this);
+            return;
+        }
 
-        RectTransform bgRect = bg.GetComponent<RectTransform>();
-        bgRect.sizeDelta = barSize;
-        bgRect.anchorMin = new Vector2(0.5f, 0f); // bottom-middle of the canvas
-        bgRect.anchorMax = new Vector2(0.5f, 0f);
-        bgRect.pivot = new Vector2(0.5f, 0f);      // pivot bottom-middle of the bar, so it centers on that anchor
-        bgRect.anchoredPosition = anchoredPosition;
+        GameObject background = new GameObject("GaugeBackground", typeof(Image));
+        background.transform.SetParent(targetCanvas.transform, false);
+        RectTransform backgroundRect = background.GetComponent<RectTransform>();
+        backgroundRect.sizeDelta = barSize;
+        backgroundRect.anchorMin = new Vector2(0.5f, 0f);
+        backgroundRect.anchorMax = new Vector2(0.5f, 0f);
+        backgroundRect.pivot = new Vector2(0.5f, 0f);
+        backgroundRect.anchoredPosition = anchoredPosition;
+        background.GetComponent<Image>().color = backgroundColor;
 
-        bg.GetComponent<Image>().color = backgroundColor;
-
-        // Fill bar — child of the background, so it inherits its position automatically.
         GameObject fill = new GameObject("GaugeFill", typeof(Image));
-        fill.transform.SetParent(bg.transform, false);
-
+        fill.transform.SetParent(background.transform, false);
         fillRect = fill.GetComponent<RectTransform>();
         fillRect.anchorMin = new Vector2(0f, 0f);
-        fillRect.anchorMax = new Vector2(0f, 1f); // stretch to match background's height
+        fillRect.anchorMax = new Vector2(0f, 1f);
         fillRect.pivot = new Vector2(0f, 0.5f);
         fillRect.anchoredPosition = Vector2.zero;
-
         maxFillWidth = barSize.x;
-        fillRect.sizeDelta = new Vector2(maxFillWidth, 0f); // height comes from the stretch anchors above
-
+        fillRect.sizeDelta = new Vector2(0f, 0f);
         fill.GetComponent<Image>().color = fillColor;
     }
 
@@ -68,66 +86,66 @@ public class Gauge : MonoBehaviour
     {
         if (isDraining)
         {
-            currentValue -= drainRatePerSecond * Time.unscaledDeltaTime;
-            Debug.Log($"[Gauge] Draining. currentValue = {currentValue}");
-
+            currentValue = Mathf.Max(0f, currentValue - DrainPerRealSecond * Time.unscaledDeltaTime);
             if (currentValue <= 0f)
             {
-                currentValue = 0f;
-                Debug.Log("[Gauge] Hit empty — calling StopTimeDilation and firing OnGaugeEmpty");
-                StopTimeDilation();
+                isDraining = false;
                 OnGaugeEmpty?.Invoke();
             }
         }
 
         displayedValue = Mathf.Lerp(displayedValue, currentValue, Time.unscaledDeltaTime * fillSpeed);
-
-        Vector2 size = fillRect.sizeDelta;
-        size.x = maxFillWidth * displayedValue;
-        fillRect.sizeDelta = size;
+        UpdateFillImmediately();
     }
 
-    // Call this when the player lands a perfect parry.
     public void OnParrySuccess()
     {
-        currentValue = Mathf.Clamp01(currentValue + parryFillAmount);
-        Debug.Log($"Gauge filled to: {currentValue}");
+        if (isDraining) return;
+
+        currentValue = Mathf.Min(MaximumCharge, currentValue + ChargePerParry);
         if (playerSwordSound != null)
-        {
             playerSwordSound.PlayClash();
-        }
     }
 
+    /// <summary>
+    /// Called by OverdriveController ONLY. Retained original public name for
+    /// compatibility with any current UnityEvents or external callers.
+    /// </summary>
     public bool StartTimeDilation()
     {
-        Debug.Log($"[Gauge] StartTimeDilation called. currentValue = {currentValue}");
-        if (currentValue <= 0f)
-        {
-            Debug.Log("[Gauge] Refused to start — gauge is empty.");
-            return false;
-        }
-        if (playerSwordSound != null)
-        {
-            playerSwordSound.PlayCharge();
-        }
-        isDraining = true;
-        Debug.Log("[Gauge] isDraining set to TRUE");
-        return true;
-       
+        return StartTimeDilation(0f);
+    }
 
+    public bool StartTimeDilation(float minimumCharge)
+    {
+        if (isDraining || currentValue <= 0f ||
+            currentValue + 0.00001f < Mathf.Max(0f, minimumCharge))
+            return false;
+
+        isDraining = true;
+        if (playerSwordSound != null)
+            playerSwordSound.PlayCharge();
+        return true;
     }
 
     public void StopTimeDilation()
     {
-        Debug.Log("[Gauge] StopTimeDilation called. isDraining set to FALSE");
         isDraining = false;
     }
-    public bool IsDraining => isDraining;
 
-    // Empties the gauge, e.g. when the player dies or a fight ends.
     public void ResetGauge()
     {
-        currentValue = 0f;
         isDraining = false;
+        currentValue = 0f;
+        displayedValue = 0f;
+        UpdateFillImmediately();
+    }
+
+    private void UpdateFillImmediately()
+    {
+        if (fillRect == null) return;
+        Vector2 size = fillRect.sizeDelta;
+        size.x = maxFillWidth * Mathf.Clamp01(displayedValue / MaximumCharge);
+        fillRect.sizeDelta = size;
     }
 }

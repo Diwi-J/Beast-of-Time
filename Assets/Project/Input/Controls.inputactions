@@ -67,6 +67,16 @@
                     "priority": 0
                 },
                 {
+                    "name": "Dodge",
+                    "type": "Button",
+                    "id": "6c3c9f05-aba2-471c-b022-3a36a9a65e7f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
+                },
+                {
                     "name": "PowerUp",
                     "type": "Button",
                     "id": "3b47fe5d-9326-4bf4-ba97-d79e42938684",
@@ -245,7 +255,7 @@
                 {
                     "name": "",
                     "id": "f0ab9b87-eafb-439d-b47f-ae5262c7781d",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard & Mouse",
@@ -327,6 +337,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "SwitchTarget",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e7b61658-81d2-4582-807b-093a85748dca",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard & Mouse",
+                    "action": "Dodge",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cbf302ba-e124-4e7b-89cd-c8beda08d0e5",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dodge",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
