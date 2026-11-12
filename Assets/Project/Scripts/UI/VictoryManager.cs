@@ -61,7 +61,7 @@ public class VictoryManager : MonoBehaviour
 
         // Freeze the game so the player can't keep fighting behind the panel
         Time.timeScale = 0f;
-
+        
         // Free the mouse so the buttons are clickable
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -72,11 +72,13 @@ public class VictoryManager : MonoBehaviour
     {
         Time.timeScale = 1f; // reset, otherwise the reloaded scene stays frozen
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+       
     }
 
     public void QuitToMenu()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(0); // assumes the main menu is scene 0
+        
     }
 }
