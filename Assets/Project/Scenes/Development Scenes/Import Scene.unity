@@ -1382,10 +1382,6 @@ PrefabInstance:
       propertyPath: worldResetCoordinator
       value: 
       objectReference: {fileID: 1311202450}
-    - target: {fileID: 4189816085160314571, guid: f753439cd63baeb499d942c83567ca26, type: 3}
-      propertyPath: logComboDecisions
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6820330369001683608, guid: f753439cd63baeb499d942c83567ca26, type: 3}
       propertyPath: orbitalFollow
       value: 
@@ -1406,10 +1402,6 @@ PrefabInstance:
       propertyPath: inputAxisController
       value: 
       objectReference: {fileID: 719268750619326996}
-    - target: {fileID: 8578382884929578814, guid: f753439cd63baeb499d942c83567ca26, type: 3}
-      propertyPath: interactionRange
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 8600530215060853980, guid: f753439cd63baeb499d942c83567ca26, type: 3}
       propertyPath: actorRegistry
       value: 
