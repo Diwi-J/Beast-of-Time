@@ -37162,6 +37162,10 @@ PrefabInstance:
       propertyPath: inputAxisController
       value: 
       objectReference: {fileID: 719268750619326996}
+    - target: {fileID: 8600530215060853980, guid: f753439cd63baeb499d942c83567ca26, type: 3}
+      propertyPath: gauge
+      value: 
+      objectReference: {fileID: 313652939}
     - target: {fileID: 8981288301009899438, guid: f753439cd63baeb499d942c83567ca26, type: 3}
       propertyPath: lockOnTarget
       value: 
@@ -37761,7 +37765,7 @@ Transform:
   m_GameObject: {fileID: 1768873555}
   serializedVersion: 2
   m_LocalRotation: {x: 0.010114232, y: 0.98946404, z: -0.08656689, w: 0.11560619}
-  m_LocalPosition: {x: 1.970208, y: 1.8876784, z: 7.608672}
+  m_LocalPosition: {x: 1.9330596, y: 2.1957548, z: 7.6082935}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -45002,7 +45006,7 @@ Transform:
   m_GameObject: {fileID: 7397122726023392471}
   serializedVersion: 2
   m_LocalRotation: {x: 0.010114232, y: 0.98946404, z: -0.08656689, w: 0.11560619}
-  m_LocalPosition: {x: 1.970208, y: 1.8876784, z: 7.608672}
+  m_LocalPosition: {x: 1.9330596, y: 2.1957548, z: 7.6082935}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
