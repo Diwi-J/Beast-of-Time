@@ -524149,27 +524149,20 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: BeginAttack
-    data: Melee_2
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.23333333
-    functionName: Enablehitbox
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.23333333
     functionName: Disablehitbox
     data: HitBox_RightAxe
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.6666667
+  - time: 0.23333333
+    functionName: Enablehitbox
+    data: HitBox_LeftAxe
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.23333333
     functionName: Disablehitbox
     data: HitBox_RightAxe
     objectReferenceParameter: {fileID: 0}
@@ -524179,6 +524172,13 @@ AnimationClip:
   - time: 0.6666667
     functionName: Disablehitbox
     data: HitBox_LeftAxe
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.6666667
+    functionName: Disablehitbox
+    data: HitBox_RightAxe
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
