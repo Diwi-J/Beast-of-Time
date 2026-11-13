@@ -14,7 +14,8 @@ public enum EnemyReactionKind
 /// Enemy-only presentation/action-interruption bridge for confirmed combat
 /// outcomes. No AI or player lock-on code is used here.
 ///
-/// Mobs:      player parry -> Parried, regardless of poise.
+/// Mobs:      player parry -> Parried only for an active Melee_1 segment.
+///            Melee_2 may still be parried, but never interrupts the mob.
 /// Mobs:      clean hit while Idle -> directional left/right hit trigger.
 /// Bosses:   player parry -> no ordinary parry reaction; poise still accumulates.
 /// Bosses:   clean hit while Idle -> one hit trigger.
@@ -34,8 +35,8 @@ public sealed class EnemyCombatReactions : MonoBehaviour, ICharacterLifecyclePar
 {
     [Header("Animator trigger names (must match this enemy's Animator)")]
     [SerializeField] private string mobParriedTrigger = "Parried";
-    [SerializeField] private string mobHitFromLeftTrigger = "HitLeft";
-    [SerializeField] private string mobHitFromRightTrigger = "HitRight";
+    [SerializeField] private string mobHitFromLeftTrigger = "Damage_left";
+    [SerializeField] private string mobHitFromRightTrigger = "Damage_Right";
     [SerializeField] private string bossHitTrigger = "Hit";
     [SerializeField] private string stunnedTrigger = "Stunned";
 
@@ -44,11 +45,11 @@ public sealed class EnemyCombatReactions : MonoBehaviour, ICharacterLifecyclePar
     [SerializeField] private string idleStateTag = "Idle";
     [Tooltip("Float used by the enemy's movement blend tree.")]
     [SerializeField] private string speedParameter = "Speed";
-    [Min(0f)] [SerializeField] private float idleSpeedTolerance = 0.05f;
+    [Min(0f)][SerializeField] private float idleSpeedTolerance = 0.05f;
 
     [Header("Reaction cleanup")]
     [Tooltip("Failsafe in character gameplay seconds if an OnReactionAnimationFinished animation event is missing. Tune above the full reaction/substate duration.")]
-    [Min(0.1f)] [SerializeField] private float reactionTimeout = 8f;
+    [Min(0.1f)][SerializeField] private float reactionTimeout = 8f;
 
     public EnemyReactionKind CurrentReaction { get; private set; } = EnemyReactionKind.None;
     public bool IsReacting => CurrentReaction != EnemyReactionKind.None;
@@ -62,6 +63,7 @@ public sealed class EnemyCombatReactions : MonoBehaviour, ICharacterLifecyclePar
     private Health health;
     private Animator animator;
     private CharacterTimeModifier timeModifier;
+    private MobAttackController mobAttackController;
     private int speedHash;
     private bool hasSpeedParameter;
     private float reactionElapsed;
@@ -77,6 +79,7 @@ public sealed class EnemyCombatReactions : MonoBehaviour, ICharacterLifecyclePar
         health = GetComponent<Health>();
         animator = GetComponent<Animator>();
         timeModifier = GetComponent<CharacterTimeModifier>();
+        mobAttackController = GetComponent<MobAttackController>();
 
         speedHash = Animator.StringToHash(speedParameter);
         hasSpeedParameter = HasParameter(speedParameter, AnimatorControllerParameterType.Float);
@@ -135,8 +138,15 @@ public sealed class EnemyCombatReactions : MonoBehaviour, ICharacterLifecyclePar
         if (hit.Outcome != CombatHitOutcome.Parried || hit.Attacker != combat) return;
         if (!IsPlayer(hit.Defender)) return;
 
-        // Ordinary mob parry reaction is independent of the hidden poise gauge.
-        // The player's parry does not automatically stagger bosses.
+        // A successful parry ALWAYS negates damage and fills the player's
+        // gauge (CombatResolver). It only INTERRUPTS the mob if the incoming
+        // strike was Melee_1. This applies to standalone attacks and nested
+        // combo states regardless of their authored order (Knight exception).
+        if (mobAttackController == null || !mobAttackController.ShouldInterruptFromParry(hit))
+            return;
+
+        // The player's parry does not automatically stagger bosses; poise
+        // accumulation is already handled independently by EnemyPoise.
         EnterReaction(EnemyReactionKind.Parried, mobParriedTrigger, interruptAttack: true);
     }
 

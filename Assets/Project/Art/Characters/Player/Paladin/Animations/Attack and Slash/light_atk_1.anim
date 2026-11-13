@@ -54585,7 +54585,7 @@ AnimationClip:
   m_Events:
   - time: 0.33333334
     functionName: BeginAttack
-    data: 1_LightAtk
+    data: Light_Attack_1
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

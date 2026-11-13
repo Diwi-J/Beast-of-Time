@@ -71,9 +71,9 @@ public sealed class PlayerActionCoordinator : MonoBehaviour, ICharacterLifecycle
     private bool warnedAboutMissingParameter;
 
     private static readonly int IsBlockingHash = Animator.StringToHash("IsBlocking");
-    private static readonly int Light1Hash = Animator.StringToHash("1_LightAtk");
-    private static readonly int Light2Hash = Animator.StringToHash("2_LightAtk");
-    private static readonly int HeavyHash = Animator.StringToHash("1_HeavyAtk");
+    private static readonly int Light1Hash = Animator.StringToHash("Light_Attack_1");
+    private static readonly int Light2Hash = Animator.StringToHash("Light_Attack_2");
+    private static readonly int HeavyHash = Animator.StringToHash("Heavy_Attack_1");
     private static readonly int IsFreeHash = Animator.StringToHash("IsFree");
 
     private void Awake()

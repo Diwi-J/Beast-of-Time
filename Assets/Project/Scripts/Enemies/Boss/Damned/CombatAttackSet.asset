@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f72d8b37a5b12c48874d414a3305859, type: 3}
+  m_Name: CombatAttackSet
+  m_EditorClassIdentifier: Assembly-CSharp::CombatAttackSet
+  attacks:
+  - attackId: Melee_1
+    baseDamage: 12
+    heavyAttack: 0
+    comboDamageMultiplier: 0
+  - attackId: Melee_2
+    baseDamage: 14
+    heavyAttack: 0
+    comboDamageMultiplier: 0
+  - attackId: Melee_3
+    baseDamage: 16
+    heavyAttack: 0
+    comboDamageMultiplier: 0
+  - attackId: Melee_4
+    baseDamage: 18
+    heavyAttack: 0
+    comboDamageMultiplier: 0
+  - attackId: Running_Attack
+    baseDamage: 16
+    heavyAttack: 0
+    comboDamageMultiplier: 0
+  - attackId: Blood_Shout
+    baseDamage: 20
+    heavyAttack: 0
+    comboDamageMultiplier: 0
+  - attackId: Choke_1
+    baseDamage: 7
+    heavyAttack: 0
+    comboDamageMultiplier: 0
+  - attackId: Choke_2
+    baseDamage: 8
+    heavyAttack: 0
+    comboDamageMultiplier: 0
+  - attackId: Stomp_1
+    baseDamage: 12
+    heavyAttack: 0
+    comboDamageMultiplier: 0
+  - attackId: Stomp_2
+    baseDamage: 11
+    heavyAttack: 0
+    comboDamageMultiplier: 0
+  - attackId: Stomp_3
+    baseDamage: 18
+    heavyAttack: 0
+    comboDamageMultiplier: 0

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f72d8b37a5b12c48874d414a3305859, type: 3}
+  m_Name: CombatAttackSet
+  m_EditorClassIdentifier: Assembly-CSharp::CombatAttackSet
+  attacks:
+  - attackId: Melee_1
+    baseDamage: 16
+    heavyAttack: 0
+    comboDamageMultiplier: 1.4
+  - attackId: Melee_2
+    baseDamage: 13
+    heavyAttack: 0
+    comboDamageMultiplier: 1.4

@@ -12,7 +12,8 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 5696971496098138260}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 5610707286312304781}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -22,7 +23,7 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: 6a2a90e15600f7d4782c0170bef59fec, type: 2}
-  m_Tag: 
+  m_Tag: MobAttack
   m_SpeedParameter: SlowDown
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
@@ -129,6 +130,19 @@ AnimatorStateTransition:
   m_InterruptionSource: 1
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &-3866982840953962910
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d726f0e5261f644eb5387331540d1cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MobAttackSegmentState
+  segment: 0
 --- !u!1101 &-2669301906140361962
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -275,7 +289,8 @@ AnimatorState:
   m_Transitions:
   - {fileID: 1010516661473535055}
   - {fileID: -4460455501175549556}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 7866582173148129791}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -285,7 +300,7 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: 603a87bdaeae9454c9e7adc45628965b, type: 2}
-  m_Tag: 
+  m_Tag: MobAttack
   m_SpeedParameter: SlowDown
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
@@ -328,7 +343,8 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -2332599729482571568}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 1543588230680859192}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -338,7 +354,7 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: 6a2a90e15600f7d4782c0170bef59fec, type: 2}
-  m_Tag: 
+  m_Tag: MobAttack
   m_SpeedParameter: SlowDown
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
@@ -651,6 +667,19 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &1543588230680859192
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d726f0e5261f644eb5387331540d1cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MobAttackSegmentState
+  segment: 1
 --- !u!1102 &1631814232923769495
 AnimatorState:
   serializedVersion: 6
@@ -664,7 +693,8 @@ AnimatorState:
   m_Transitions:
   - {fileID: 637161031133027367}
   - {fileID: 1304953221516263110}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: -3866982840953962910}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -674,7 +704,7 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: 603a87bdaeae9454c9e7adc45628965b, type: 2}
-  m_Tag: 
+  m_Tag: MobAttack
   m_SpeedParameter: SlowDown
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
@@ -944,6 +974,19 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!114 &5610707286312304781
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d726f0e5261f644eb5387331540d1cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MobAttackSegmentState
+  segment: 1
 --- !u!1101 &5696971496098138260
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -1059,6 +1102,19 @@ AnimatorStateMachine:
   m_ExitPosition: {x: 560, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 560, y: 20, z: 0}
   m_DefaultState: {fileID: 4413380778127478053}
+--- !u!114 &7866582173148129791
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d726f0e5261f644eb5387331540d1cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MobAttackSegmentState
+  segment: 0
 --- !u!1102 &7920211334819036373
 AnimatorState:
   serializedVersion: 6
