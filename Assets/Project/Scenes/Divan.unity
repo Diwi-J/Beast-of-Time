@@ -572,8 +572,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+      - m_Target: {fileID: 1992939179}
+        m_TargetAssemblyTypeName: PlayerSwordSound, Assembly-CSharp
         m_MethodName: PlayButtonClick
         m_Mode: 1
         m_Arguments:
@@ -3409,8 +3409,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+      - m_Target: {fileID: 1992939179}
+        m_TargetAssemblyTypeName: PlayerSwordSound, Assembly-CSharp
         m_MethodName: PlayButtonClick
         m_Mode: 1
         m_Arguments:
@@ -4016,8 +4016,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+      - m_Target: {fileID: 1992939179}
+        m_TargetAssemblyTypeName: PlayerSwordSound, Assembly-CSharp
         m_MethodName: PlayButtonClick
         m_Mode: 1
         m_Arguments:
@@ -14268,8 +14268,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+      - m_Target: {fileID: 1992939179}
+        m_TargetAssemblyTypeName: PlayerSwordSound, Assembly-CSharp
         m_MethodName: PlayButtonClick
         m_Mode: 1
         m_Arguments:
@@ -14442,7 +14442,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4605752267124551122, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7666040763353089398, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
       propertyPath: monsterSound
@@ -29070,8 +29070,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+      - m_Target: {fileID: 1992939179}
+        m_TargetAssemblyTypeName: PlayerSwordSound, Assembly-CSharp
         m_MethodName: PlayButtonClick
         m_Mode: 1
         m_Arguments:
@@ -29178,7 +29178,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4605752267124551122, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7666040763353089398, guid: faa3109b48a278043a7b0152de48f18a, type: 3}
       propertyPath: monsterSound
@@ -37815,6 +37815,7 @@ MonoBehaviour:
   playerHealth: {fileID: 694507053}
   gameOverPanel: {fileID: 645598999}
   pauseCanvas: {fileID: 236502114}
+  sound: {fileID: 1992939179}
   panelDelay: 5
 --- !u!1 &1821492181
 GameObject:
@@ -37865,6 +37866,7 @@ MonoBehaviour:
   victoryPanel: {fileID: 1184623852}
   bossHealthBar: {fileID: 218763668}
   pauseCanvas: {fileID: 236502114}
+  sound: {fileID: 1992939179}
   panelDelay: 5
 --- !u!1 &1834559451
 GameObject:
@@ -42222,7 +42224,12 @@ MonoBehaviour:
   runningClip: {fileID: 8300000, guid: 16831c77e7ac4c24dae7900bcd852b68, type: 3}
   monsterClip: {fileID: 8300000, guid: 385d84611651d404db9033db9c8a995b, type: 3}
   monsterStompClip: {fileID: 8300000, guid: 0b0cb337c3f28c5428187b516ae5dcc7, type: 3}
+  menuMusicClip: {fileID: 8300000, guid: 2aab438bdd57dc24ca9406acf463fcb2, type: 3}
+  buttonClickClip: {fileID: 8300000, guid: 79b35c4f7913b904bb2af9275827dfbe, type: 3}
+  victoryClip: {fileID: 8300000, guid: a79143be29f6dec4b8d7dd5a7954f9ea, type: 3}
+  gameOverClip: {fileID: 8300000, guid: d2379ff119915794bba1154d617963f1, type: 3}
   volume: 1
+  musicVolume: 0.6
 --- !u!1 &2008953897
 GameObject:
   m_ObjectHideFlags: 0
@@ -44141,7 +44148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthBar
   health: {fileID: 2027191064}
-  offset: {x: 0, y: 1.5, z: 0}
+  offset: {x: 0, y: 2, z: 0}
   size: {x: 1.5, y: 0.2}
   backColor: {r: 0.1, g: 0.1, b: 0.1, a: 0.8}
   fillColor: {r: 1, g: 0, b: 0, a: 1}
@@ -44388,8 +44395,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+      - m_Target: {fileID: 1992939179}
+        m_TargetAssemblyTypeName: PlayerSwordSound, Assembly-CSharp
         m_MethodName: PlayButtonClick
         m_Mode: 1
         m_Arguments:
@@ -44670,8 +44677,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+      - m_Target: {fileID: 1992939179}
+        m_TargetAssemblyTypeName: PlayerSwordSound, Assembly-CSharp
         m_MethodName: PlayButtonClick
         m_Mode: 1
         m_Arguments:

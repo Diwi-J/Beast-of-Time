@@ -9,7 +9,7 @@ public class VictoryManager : MonoBehaviour
     [SerializeField] private GameObject victoryPanel;     // "You Win" panel
     [SerializeField] private BossHealthBar bossHealthBar; // so we can hide it on win
     [SerializeField] private GameObject pauseCanvas;      // drag your pause canvas in here
-
+    [SerializeField] private PlayerSwordSound sound;
     // How long to wait after the boss dies before showing the panel.
     [SerializeField] private float panelDelay = 5f;
 
@@ -58,7 +58,7 @@ public class VictoryManager : MonoBehaviour
         if (pauseCanvas != null) pauseCanvas.SetActive(false);
 
         if (victoryPanel != null) victoryPanel.SetActive(true);
-
+        sound.PlayVictory();
         // Freeze the game so the player can't keep fighting behind the panel
         Time.timeScale = 0f;
         
