@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af2c6548db54f2148bae937720b0aa80, type: 3}
   m_Name: AbominationPoise
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPoiseConfig
-  maximumPoise: 21
+  maximumPoise: 12
   gainWhenParried: 3
   gainFromHeavyHit: 1
