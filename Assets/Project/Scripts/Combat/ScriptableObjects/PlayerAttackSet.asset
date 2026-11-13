@@ -13,15 +13,23 @@ MonoBehaviour:
   m_Name: PlayerAttackSet
   m_EditorClassIdentifier: Assembly-CSharp::CombatAttackSet
   attacks:
-  - attackId: 1_LightAtk
-    baseDamage: 7
+  - attackId: Light_Attack_1
+    baseDamage: 8
     heavyAttack: 0
     comboDamageMultiplier: 1.1
-  - attackId: 2_LightAtk
+  - attackId: Light_Attack_2
     baseDamage: 9
     heavyAttack: 0
     comboDamageMultiplier: 1.1
-  - attackId: 1_HeavyAtk
-    baseDamage: 13
-    heavyAttack: 1
+  - attackId: Light_Attack_3
+    baseDamage: 11
+    heavyAttack: 0
     comboDamageMultiplier: 1.6
+  - attackId: Heavy_Attack_1
+    baseDamage: 14
+    heavyAttack: 1
+    comboDamageMultiplier: 1.7
+  - attackId: Heavy_Attack_2
+    baseDamage: 14
+    heavyAttack: 1
+    comboDamageMultiplier: 1.8

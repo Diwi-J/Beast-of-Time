@@ -12,7 +12,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a13a2dc22787e474eb0ef13422ad0e47, type: 3}
   m_Name: PlayerComboConfig
   m_EditorClassIdentifier: Assembly-CSharp::PlayerComboConfig
-  firstLightOpenerId: 
-  secondLightOpenerId: 
-  heavyOpenerId: 
-  moves: []
+  firstLightOpenerId: Light_Attack_1
+  secondLightOpenerId: Light_Attack_2
+  heavyOpenerId: Heavy_Attack_1
+  moves:
+  - attackId: Light_Attack_1
+    input: 0
+    animatorTrigger: Light_Attack_1
+    nextLightAttackId: Light_Attack_2
+    nextHeavyAttackId: Heavy_Attack_1
+  - attackId: Light_Attack_2
+    input: 0
+    animatorTrigger: Light_Attack_2
+    nextLightAttackId: Light_Attack_3
+    nextHeavyAttackId: Heavy_Attack_2
+  - attackId: Light_Attack_3
+    input: 0
+    animatorTrigger: Light_Attack_3
+    nextLightAttackId: Light_Attack_1
+    nextHeavyAttackId: Heavy_Attack_1
+  - attackId: Heavy_Attack_1
+    input: 1
+    animatorTrigger: Heavy_Attack_1
+    nextLightAttackId: Light_Attack_1
+    nextHeavyAttackId: Heavy_Attack_2
+  - attackId: Heavy_Attack_2
+    input: 1
+    animatorTrigger: Heavy_Attack_2
+    nextLightAttackId: Light_Attack_3
+    nextHeavyAttackId: Heavy_Attack_1
