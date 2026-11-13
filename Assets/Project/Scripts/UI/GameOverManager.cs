@@ -7,7 +7,7 @@ public class GameOverManager : MonoBehaviour
     [SerializeField] private PlayerHealth playerHealth;   // drag the player's PlayerHealth in here
     [SerializeField] private GameObject gameOverPanel;    // drag your Game Over panel in here
     [SerializeField] private GameObject pauseCanvas;      // drag your pause canvas in here
-
+    [SerializeField] private PlayerSwordSound sound;
     // Pause before the panel shows, so the death animation can play first.
     [SerializeField] private float panelDelay = 5f;
 
@@ -54,7 +54,9 @@ public class GameOverManager : MonoBehaviour
             pauseCanvas.SetActive(false);
 
         gameOverPanel.SetActive(true);
+        sound.PlayGameOver();
         Time.timeScale = 0f; // freeze the game behind the panel
+        
 
         // Free the cursor so the buttons can be clicked.
         Cursor.lockState = CursorLockMode.None;
@@ -64,6 +66,7 @@ public class GameOverManager : MonoBehaviour
     // Hook these up to the buttons' On Click () events in the Inspector.
     public void OnRestartPressed()
     {
+
         // Reset time first, otherwise the reloaded scene starts frozen.
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -73,10 +76,8 @@ public class GameOverManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(0);
+        
     }
 
-    public void OnExitPressed()
-    {
-        Application.Quit();
-    }
+    
 }

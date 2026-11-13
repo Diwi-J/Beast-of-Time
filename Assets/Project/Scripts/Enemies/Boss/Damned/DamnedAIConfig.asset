@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15797238e54587944af56d205cd37879, type: 3}
+  m_Name: DamnedAIConfig
+  m_EditorClassIdentifier: Assembly-CSharp::DamnedAIConfig
+  arenaLeashDistance: 30
+  homeArrivalDistance: 0.65
+  repathInterval: 0.2
+  turnDegreesPerSecond: 300
+  locomotionWalkSpeed: 1.8
+  locomotionRunSpeed: 3.5
+  runWhenFartherThan: 5
+  speedDamping: 0.12
+  closeRange: 2.4
+  mediumRange: 4.8
+  chokeRange: 6
+  bloodShoutRange: 10
+  runningAttackMinDistance: 7
+  runningAttackFinishRange: 2.4
+  attackFacingAngle: 50
+  fullHealthCooldown: 2
+  zeroHealthCooldown: 0.25
+  basicMeleeWeight: 3
+  meleeComboWeight: 3
+  stompWeight: 1.5
+  mediumMeleeWeight: 2
+  chokeWeight: 1.5
+  bloodShoutWeight: 1.5
+  runningAttackWeight: 2
+  attackEntryTimeout: 1
+  attackMaxDuration: 16
+  runningAttackMaxDuration: 9

@@ -1,80 +1,131 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
-
+/// <summary>
+/// Input bridge ONLY. PlayerComboController chooses which of five authored
+/// moves to request, PlayerActionCoordinator owns action/interruption gates.
+/// The combat hit window and damage remain in CharacterCombat/CombatAttackRuntime.
+/// External PlayerCameraFocus and OverdriveController remain untouched.
+/// </summary>
 [RequireComponent(typeof(Animator))]
-public class PlayerCombat : MonoBehaviour
+[RequireComponent(typeof(PlayerActionCoordinator))]
+[RequireComponent(typeof(PlayerComboController))]
+public class PlayerCombat : MonoBehaviour, ICharacterLifecycleParticipant
 {
-    private Animator animator;
-    private Controls controls;
+    [Header("Input")]
+    [SerializeField] private string dodgeActionName = "Dodge";
 
-    private bool lightAttackToggle;
-
-    private static readonly int LightAttack1Hash = Animator.StringToHash("1_LightAtk");
-    private static readonly int LightAttack2Hash = Animator.StringToHash("2_LightAtk");
-    private static readonly int HeavyAttackHash = Animator.StringToHash("1_HeavyAtk");
-    private static readonly int IsBlockingHash = Animator.StringToHash("IsBlocking");
-    private static readonly int PoweredUpHash = Animator.StringToHash("PoweredUp");
-    private static readonly int IsFreeHash = Animator.StringToHash("IsFree");
+    [Header("Existing audio")]
     [SerializeField] private PlayerSwordSound playerSwordSound;
+    [Min(0.1f)][SerializeField] private float swingSoundWaitTimeout = 1.5f;
+
+    private Controls controls;
+    private PlayerActionCoordinator actions;
+    private PlayerComboController combos;
+    private CombatAttackRuntime attackRuntime;
+    private InputAction dodgeAction;
+    private Coroutine pendingSwingSound;
 
     private void Awake()
     {
-        animator = GetComponent<Animator>();
-
+        actions = GetComponent<PlayerActionCoordinator>();
+        combos = GetComponent<PlayerComboController>();
+        attackRuntime = GetComponent<CombatAttackRuntime>();
         controls = new Controls();
 
-        controls.Player.LightAttack.performed += _ => TryLightAttack();
-        controls.Player.HeavyAttack.performed += _ => TryHeavyAttack();
-        controls.Player.Block.performed += _ => animator.SetBool(IsBlockingHash, true);
-        controls.Player.Block.canceled += _ => animator.SetBool(IsBlockingHash, false);
-        controls.Player.PowerUp.performed += _ => animator.SetTrigger(PoweredUpHash);
+        controls.Player.LightAttack.performed += OnLightAttack;
+        controls.Player.HeavyAttack.performed += OnHeavyAttack;
+        controls.Player.Block.performed += OnBlockPressed;
+        controls.Player.Block.canceled += OnBlockReleased;
+
+        dodgeAction = controls.asset.FindAction("Player/" + dodgeActionName, false);
+        if (dodgeAction != null)
+            dodgeAction.performed += OnDodge;
+        else
+            Debug.LogWarning($"[PlayerCombat] No 'Player/{dodgeActionName}' input action found; configure the Dodge action.", this);
     }
 
-    private void OnEnable() => controls.Enable();
-    private void OnDisable() => controls.Disable();
-
-    private bool IsFree()
+    private void OnEnable()
     {
-        AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
-
-        bool free = !state.IsTag("Attack") && !state.IsTag("Block");
-        animator.SetBool(IsFreeHash, free);
-        return free;
+        if (combos != null) combos.AttackRequested += OnAttackRequested;
+        if (controls != null) controls.Enable();
     }
 
-    private void TryLightAttack()
+    private void OnDisable()
     {
-        Debug.Log($"TryLightAttack called, IsFree = {IsFree()}");
-        if (!IsFree()) return;
-
-        animator.SetTrigger(lightAttackToggle ? LightAttack2Hash : LightAttack1Hash);
-        lightAttackToggle = !lightAttackToggle;
-
-        StartCoroutine(PlaySoundWhenAttackStarts());
-
+        StopSwingSoundWait();
+        if (combos != null) combos.AttackRequested -= OnAttackRequested;
+        if (controls != null) controls.Disable();
+        if (actions != null) actions.RequestBlock(false);
     }
 
-    private void TryHeavyAttack()
+    private void OnDestroy()
     {
-        if (!IsFree()) return;
-
-        animator.SetTrigger(HeavyAttackHash);
-        StartCoroutine(PlaySoundWhenAttackStarts());
+        if (controls == null) return;
+        controls.Player.LightAttack.performed -= OnLightAttack;
+        controls.Player.HeavyAttack.performed -= OnHeavyAttack;
+        controls.Player.Block.performed -= OnBlockPressed;
+        controls.Player.Block.canceled -= OnBlockReleased;
+        if (dodgeAction != null) dodgeAction.performed -= OnDodge;
+        controls.Dispose();
     }
 
-    private IEnumerator PlaySoundWhenAttackStarts()
+    private void OnLightAttack(InputAction.CallbackContext context)
     {
-        // Wait until the Animator actually enters an Attack state.
-        while (!animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
+        combos.TryRequestAttack(PlayerComboInput.Light);
+    }
+
+    private void OnHeavyAttack(InputAction.CallbackContext context)
+    {
+        combos.TryRequestAttack(PlayerComboInput.Heavy);
+    }
+
+    private void OnBlockPressed(InputAction.CallbackContext context) => actions.RequestBlock(true);
+    private void OnBlockReleased(InputAction.CallbackContext context) => actions.RequestBlock(false);
+
+    private void OnDodge(InputAction.CallbackContext context)
+    {
+        actions.TryDodge(controls.Player.Move.ReadValue<Vector2>());
+    }
+
+    private void OnAttackRequested(string attackId)
+    {
+        StopSwingSoundWait();
+        if (playerSwordSound != null)
+            pendingSwingSound = StartCoroutine(PlaySoundWhenAttackClipBegins(attackId));
+    }
+
+    private IEnumerator PlaySoundWhenAttackClipBegins(string id)
+    {
+        // This waits for the Phase 05 BeginAttack animation event, so the
+        // sound doesn't fire early while a previous combo clip is still playing.
+        float elapsed = 0f;
+        while (elapsed < swingSoundWaitTimeout)
         {
+            if (combos == null || !combos.IsSequenceActive)
+                break;
+
+            if (attackRuntime != null && attackRuntime.IsActive &&
+                attackRuntime.ActiveAttackId == id)
+            {
+                playerSwordSound.PlaySlice();
+                break;
+            }
+
+            elapsed += Time.unscaledDeltaTime;
             yield return null;
         }
-
-        // Now we know an attack animation actually started.
-        if (playerSwordSound != null)
-        {
-            playerSwordSound.PlaySlice();
-        }
+        pendingSwingSound = null;
     }
+
+    private void StopSwingSoundWait()
+    {
+        if (pendingSwingSound == null) return;
+        StopCoroutine(pendingSwingSound);
+        pendingSwingSound = null;
+    }
+
+    public void OnCharacterDied() => StopSwingSoundWait();
+    public void OnCharacterReset() => StopSwingSoundWait();
 }

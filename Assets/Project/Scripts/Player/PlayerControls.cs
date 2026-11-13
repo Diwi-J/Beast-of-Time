@@ -53,6 +53,7 @@ public class PlayerControls : MonoBehaviour
 
     private Animator animator;
     private CharacterController controller;
+    private CharacterTimeModifier timeModifier;
     private Controls controls;
 
     private Vector2 moveInput;
@@ -75,6 +76,7 @@ public class PlayerControls : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
+        timeModifier = GetComponent<CharacterTimeModifier>();
         controls = new Controls();
 
         // Root motion stops if the Animator is culled while off-screen.
@@ -116,31 +118,33 @@ public class PlayerControls : MonoBehaviour
 
     private void Update()
     {
+        // One character-specific gameplay clock (Overdrive does NOT change Time.timeScale).
+        float gameplayDt = timeModifier != null ? timeModifier.GameplayDeltaTime : Time.deltaTime;
         isLocked = IsInLockedState();
 
         if (isTurning)
         {
-            turnTimer += Time.deltaTime;
+            turnTimer += gameplayDt;
             if (turnTimer > turnTimeout)
                 EndTurn();
         }
 
         if (isFocused)
-            UpdateFocus();
+            UpdateFocus(gameplayDt);
         else
-            UpdateFreelook();
+            UpdateFreelook(gameplayDt);
 
         if (controller.isGrounded)
             verticalVelocity = groundedGravity;
         else
-            verticalVelocity += gravity * Time.deltaTime;
+            verticalVelocity += gravity * gameplayDt;
     }
 
-    private void UpdateFreelook()
+    private void UpdateFreelook(float gameplayDt)
     {
         float inputMagnitude = moveInput.magnitude;
 
-        animator.SetFloat(SpeedHash, inputMagnitude * freelookRunThreshold, speedDamping, Time.deltaTime);
+        animator.SetFloat(SpeedHash, inputMagnitude * freelookRunThreshold, speedDamping, gameplayDt);
 
         if (isLocked || isTurning || inputMagnitude <= 0.1f)
             return;
@@ -172,10 +176,10 @@ public class PlayerControls : MonoBehaviour
         transform.rotation = Quaternion.Slerp(
             transform.rotation,
             Quaternion.LookRotation(desiredDirection),
-            freelookRotationSpeed * Time.deltaTime);
+            freelookRotationSpeed * gameplayDt);
     }
 
-    private void UpdateFocus()
+    private void UpdateFocus(float gameplayDt)
     {
         if (lockOnTarget != null && !isLocked && !isTurning)
         {
@@ -186,7 +190,7 @@ public class PlayerControls : MonoBehaviour
                 transform.rotation = Quaternion.Slerp(
                     transform.rotation,
                     Quaternion.LookRotation(toTarget),
-                    focusRotationSpeed * Time.deltaTime);
+                    focusRotationSpeed * gameplayDt);
             }
         }
 
@@ -195,8 +199,8 @@ public class PlayerControls : MonoBehaviour
         Vector2 scaledMove = moveInput.normalized * blendMagnitude * inputMagnitude;
 
         // The strafe clips carry their own direction, so these two values are all movement needs.
-        animator.SetFloat(MoveXHash, inputMagnitude > 0.01f ? scaledMove.x : 0f, focusMoveDamping, Time.deltaTime);
-        animator.SetFloat(MoveZHash, inputMagnitude > 0.01f ? scaledMove.y : 0f, focusMoveDamping, Time.deltaTime);
+        animator.SetFloat(MoveXHash, inputMagnitude > 0.01f ? scaledMove.x : 0f, focusMoveDamping, gameplayDt);
+        animator.SetFloat(MoveZHash, inputMagnitude > 0.01f ? scaledMove.y : 0f, focusMoveDamping, gameplayDt);
     }
 
     // ----------------------------------------------------------- Root motion
@@ -216,7 +220,7 @@ public class PlayerControls : MonoBehaviour
 
         delta *= rootMotionMultiplier;
         // Horizontal speed this frame (ignore Y). Play the run sound only while actually moving.
-        float horizontalSpeed = new Vector3(delta.x, 0f, delta.z).magnitude / Time.deltaTime;
+        float horizontalSpeed = new Vector3(delta.x, 0f, delta.z).magnitude / Mathf.Max(0.0001f, Time.deltaTime);
         bool isMoving = controller.isGrounded && !isLocked && horizontalSpeed > 0.1f;
 
         if (swordSound != null)
@@ -224,10 +228,14 @@ public class PlayerControls : MonoBehaviour
             if (isMoving) swordSound.PlayRun();
             else swordSound.StopRun();
         }
-        delta.y = verticalVelocity * Time.deltaTime; // Y is always scripted
+        // Animator.deltaPosition is already time-scaled by Animator.speed.
+        // Do NOT apply the modifier to horizontal root motion again.
+        // Vertical (scripted) motion uses the character's gameplay clock.
+        float gameplayDt = timeModifier != null ? timeModifier.GameplayDeltaTime : Time.deltaTime;
+        delta.y = verticalVelocity * gameplayDt;
 
         controller.Move(delta);
-            
+
 
     }
 
@@ -238,14 +246,14 @@ public class PlayerControls : MonoBehaviour
     {
 
         EndTurn();
-       
-            
 
-       
+
+
+
     }
     // Call this via an Animation Event on each footstep of the run clip.
-   
- 
+
+
     private void EndTurn()
     {
         isTurning = false;
