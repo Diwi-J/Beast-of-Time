@@ -7,7 +7,7 @@ public class PauseManager : MonoBehaviour
     [SerializeField] private GameObject pausePanel;
 
     // Tracks whether the game is currently paused.
-    // This stops P from re-pausing and R from "resuming" a game that isn't paused.
+    // This stops Esc from re-pausing a game that is already paused.
     private bool isPaused = false;
 
     private void Start()
@@ -27,16 +27,11 @@ public class PauseManager : MonoBehaviour
         // Update() still runs when Time.timeScale is 0,
         // so we can keep listening for key presses while paused.
 
-        // P pauses the game (only if it isn't already paused)
-        if (Keyboard.current.pKey.wasPressedThisFrame && !isPaused)
+        // Esc pauses the game (only if it isn't already paused).
+        // Resuming is handled by the on-screen Resume button instead.
+        if (Keyboard.current.escapeKey.wasPressedThisFrame && !isPaused)
         {
             OnPausePressed();
-        }
-
-        // R resumes the game (only if it is currently paused)
-        if (Keyboard.current.rKey.wasPressedThisFrame && isPaused)
-        {
-            OnResumePressed();
         }
     }
 
@@ -47,6 +42,7 @@ public class PauseManager : MonoBehaviour
         pausePanel.SetActive(true);
     }
 
+    // Hooked up to the Resume button's On Click () event in the Inspector.
     public void OnResumePressed()
     {
         isPaused = false;
