@@ -50,7 +50,7 @@ AnimatorStateTransition:
   m_ExitTime: 0.6594279
   m_HasExitTime: 1
   m_HasFixedDuration: 1
-  m_InterruptionSource: 0
+  m_InterruptionSource: 1
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!1102 &-9060173659397273717
@@ -470,9 +470,9 @@ AnimatorStateMachine:
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 370, y: -30, z: 0}
-  m_EntryPosition: {x: 370, y: 10, z: 0}
-  m_ExitPosition: {x: 370, y: -70, z: 0}
+  m_AnyStatePosition: {x: 370, y: -70, z: 0}
+  m_EntryPosition: {x: 370, y: -30, z: 0}
+  m_ExitPosition: {x: 370, y: -110, z: 0}
   m_ParentStateMachinePosition: {x: -130, y: 60, z: 0}
   m_DefaultState: {fileID: 5011315315785717030}
 --- !u!1101 &-7397576323841311155
@@ -646,7 +646,7 @@ AnimatorStateTransition:
   m_ExitTime: 0.58673495
   m_HasExitTime: 1
   m_HasFixedDuration: 1
-  m_InterruptionSource: 0
+  m_InterruptionSource: 1
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!1101 &-5915084908647866552
@@ -1061,7 +1061,7 @@ AnimatorStateTransition:
   m_ExitTime: 0.5484694
   m_HasExitTime: 1
   m_HasFixedDuration: 1
-  m_InterruptionSource: 0
+  m_InterruptionSource: 1
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!206 &-3422828972165796428
@@ -1210,7 +1210,7 @@ AnimatorStateTransition:
   m_ExitTime: 0.65949124
   m_HasExitTime: 1
   m_HasFixedDuration: 1
-  m_InterruptionSource: 0
+  m_InterruptionSource: 1
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!1101 &-3143795377186303285
@@ -1358,7 +1358,7 @@ AnimatorStateTransition:
   m_ExitTime: 0.5
   m_HasExitTime: 1
   m_HasFixedDuration: 1
-  m_InterruptionSource: 0
+  m_InterruptionSource: 1
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!1102 &-1850390894912036412
@@ -1986,7 +1986,7 @@ AnimatorStateTransition:
   m_ExitTime: 0.700424
   m_HasExitTime: 1
   m_HasFixedDuration: 1
-  m_InterruptionSource: 0
+  m_InterruptionSource: 1
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!1101 &497732346126597219
@@ -2371,7 +2371,7 @@ AnimatorStateTransition:
   m_ExitTime: 0.590053
   m_HasExitTime: 1
   m_HasFixedDuration: 1
-  m_InterruptionSource: 0
+  m_InterruptionSource: 1
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!1101 &2977266422798521317
@@ -2929,7 +2929,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Light_Attack_1
+    m_ConditionEvent: Heavy_Attack_1
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 4310429876828990446}
@@ -2942,7 +2942,7 @@ AnimatorStateTransition:
   m_ExitTime: 0.6253708
   m_HasExitTime: 1
   m_HasFixedDuration: 1
-  m_InterruptionSource: 0
+  m_InterruptionSource: 1
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!1101 &6822673800620081015

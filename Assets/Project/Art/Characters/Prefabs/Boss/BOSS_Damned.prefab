@@ -2514,7 +2514,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e86edd4cbb12fd64bb42c3c676515e43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatAttackRuntime
-  attackSet: {fileID: 0}
+  attackSet: {fileID: 11400000, guid: 9c3525548affc1748a31927b1983008b, type: 2}
 --- !u!114 &6263938748506571990
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -181,6 +181,16 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""initialStateCheck"": true,
                     ""priority"": 0
+                },
+                {
+                    ""name"": ""Pray"",
+                    ""type"": ""Button"",
+                    ""id"": ""e8a42a50-6194-4850-9a9b-99537948ca51"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
                 }
             ],
             ""bindings"": [
@@ -264,7 +274,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""bbfb8edd-a88e-41d6-8250-13bea371af1e"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -341,7 +351,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""f0ab9b87-eafb-439d-b47f-ae5262c7781d"",
-                    ""path"": ""<Keyboard>/r"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard & Mouse"",
@@ -428,23 +438,23 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""e7b61658-81d2-4582-807b-093a85748dca"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""id"": ""61b94e9a-3e44-4072-8443-1e8bf4a834da"",
+                    ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard & Mouse"",
-                    ""action"": ""Dodge"",
+                    ""action"": ""Pray"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""cbf302ba-e124-4e7b-89cd-c8beda08d0e5"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""id"": ""0b4d71a2-3b9b-45a5-84c7-77a48781d417"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Dodge"",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Pray"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -492,6 +502,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Player_Dodge = m_Player.FindAction("Dodge", throwIfNotFound: true);
         m_Player_PowerUp = m_Player.FindAction("PowerUp", throwIfNotFound: true);
         m_Player_SwitchTarget = m_Player.FindAction("SwitchTarget", throwIfNotFound: true);
+        m_Player_Pray = m_Player.FindAction("Pray", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -581,6 +592,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Dodge;
     private readonly InputAction m_Player_PowerUp;
     private readonly InputAction m_Player_SwitchTarget;
+    private readonly InputAction m_Player_Pray;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -628,6 +640,10 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/SwitchTarget".
         /// </summary>
         public InputAction @SwitchTarget => m_Wrapper.m_Player_SwitchTarget;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Pray".
+        /// </summary>
+        public InputAction @Pray => m_Wrapper.m_Player_Pray;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -681,6 +697,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @SwitchTarget.started += instance.OnSwitchTarget;
             @SwitchTarget.performed += instance.OnSwitchTarget;
             @SwitchTarget.canceled += instance.OnSwitchTarget;
+            @Pray.started += instance.OnPray;
+            @Pray.performed += instance.OnPray;
+            @Pray.canceled += instance.OnPray;
         }
 
         /// <summary>
@@ -719,6 +738,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @SwitchTarget.started -= instance.OnSwitchTarget;
             @SwitchTarget.performed -= instance.OnSwitchTarget;
             @SwitchTarget.canceled -= instance.OnSwitchTarget;
+            @Pray.started -= instance.OnPray;
+            @Pray.performed -= instance.OnPray;
+            @Pray.canceled -= instance.OnPray;
         }
 
         /// <summary>
@@ -848,5 +870,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSwitchTarget(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Pray" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPray(InputAction.CallbackContext context);
     }
 }
